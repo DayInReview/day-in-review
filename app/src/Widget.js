@@ -4,9 +4,9 @@ import './Widget.css';
 class Widget extends Component {
   render() {
     const sizeClasses = {
-      "small": "col-lg-3 col-sm-6",
-      "medium": "col-lg-4 col-sm-8",
-      "large": "col-lg-6 col-sm-12"
+      "small": "col-xl-3 col-lg-3 col-sm-6 col-12",
+      "medium": "col-xl-4 col-lg-4 col-sm-6 col-12",
+      "large": "col-xl-6 col-lg-6 col-sm-12 col-12"
     };
 
     return (
