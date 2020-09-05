@@ -1,3 +1,0 @@
-[submodule "email-summarizer"]
-	path = email-summarizer
-	url = git@github.com:DayInReview/email-summarizer.git
