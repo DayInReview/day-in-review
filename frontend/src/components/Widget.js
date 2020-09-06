@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Widget.css';
 
-class Widget extends Component {
+export default class Widget extends Component {
   render() {
     // Configurations
     const sizeClasses = {
@@ -30,5 +30,3 @@ class Widget extends Component {
     );
   }
 }
-
-export default Widget;

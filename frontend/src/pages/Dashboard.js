@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './Dashboard.css';
 import Widget from '../components/Widget'
 
-class Dashboard extends Component {
+export default class Dashboard extends Component {
   render() {
     // Create widgets
     const widgets = [];
@@ -24,5 +24,3 @@ class Dashboard extends Component {
     );
   }
 }
-
-export default Dashboard;

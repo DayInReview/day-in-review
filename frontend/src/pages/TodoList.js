@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './TodoList.css';
 import TodoListAPI from "./TodoListAPI";
 
-class TodoList extends Component {
+export default class TodoList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -80,5 +80,3 @@ class TodoList extends Component {
     );
   }
 }
-
-export default TodoList;
