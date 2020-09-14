@@ -16,7 +16,8 @@ export default class Todo extends Component {
    */
   render() {
     return (
-      <ListGroupItem 
+      <ListGroupItem
+        as="li"
         onClick={e => this.props.update(e, this.props.id)}
         className={"todo " + (this.props.completed ? "completed" : "")}
       >
