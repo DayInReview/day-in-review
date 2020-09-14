@@ -3,7 +3,12 @@ import './TodoList.css';
 import TodoListAPI from "./TodoListAPI";
 import Todo from "../components/Todo";
 
-import {ListGroup, InputGroup, FormControl, Button} from 'react-bootstrap/';
+import {
+  List,
+  Input,
+  FormControl,
+  Button
+} from '@material-ui/core'
 
 export default class TodoList extends Component {
   constructor(props) {
@@ -57,22 +62,22 @@ export default class TodoList extends Component {
     return(
       <div className="TodoList">
         {/* Add Todo */}
-        <InputGroup className="mb-3">
+        <Input className="mb-3">
           <FormControl
             placeholder="New todo"
             aria-label="New todo"
             aria-describedby="basic-addon2"
             onChange={({ target }) => this.setState({todo: target.value})}
           />
-          <InputGroup.Append>
+          <Input.Append>
             <Button variant="outline-secondary" onClick={createTodo}>
               Add
             </Button>
-          </InputGroup.Append>
-        </InputGroup>
+          </Input.Append>
+        </Input>
 
         {/* List of Todos */}
-        <ListGroup>
+        <List>
           {this.state.todos.map(({ _id, task, completed }) => (
             <Todo 
               id={_id}
@@ -82,7 +87,7 @@ export default class TodoList extends Component {
               update={updateTodo}
             />
           ))}
-        </ListGroup>
+        </List>
       </div>
     );
   }

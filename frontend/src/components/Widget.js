@@ -1,32 +1,50 @@
 import React, { Component } from 'react';
 import './Widget.css';
+import {
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Typography
+} from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 
-export default class Widget extends Component {
+
+const styles = theme => ({
+  root: {
+    maxWidth: 345
+  },
+  media: {
+    height: 140
+  }
+});
+
+class Widget extends Component {
   render() {
-    // Configurations
-    const sizeClasses = {
-      "small": "col-xl-3 col-lg-3 col-sm-6 col-12",
-      "medium": "col-xl-4 col-lg-4 col-sm-6 col-12",
-      "large": "col-xl-6 col-lg-6 col-sm-12 col-12"
-    };
     const pageLinks = {
       "todo": "/todo",
     };
+    const { classes } = this.props;
 
     return (
-      <div className={sizeClasses[this.props.size]}>
-        <div className="card mt-2">
-          <div className="card-body">
-            <div className="card-title">
-              <h3>{this.props.name}</h3>
-            </div>
-            <div className="card-text">
-              Placeholder text here
-            </div>
-            <a href={pageLinks[this.props.widget]} className="stretched-link"></a>
-          </div> 
-        </div>
-      </div>
+      <Card className={classes.root}>
+        <CardActionArea onClick={() => {window.location.assign(pageLinks[this.props.widget])}}>
+          <CardMedia
+            className={classes.media}
+          />
+          <CardContent>
+            <Typography variant="h5">
+              {this.props.name}
+            </Typography>
+            <Typography>
+              Filler text here for now
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+      </Card>
     );
   }
 }
+
+export default withStyles(styles)(Widget);

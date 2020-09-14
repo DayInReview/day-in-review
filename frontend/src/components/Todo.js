@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Todo.css';
 
-import ListGroupItem from 'react-bootstrap/ListGroupItem';
+import ListItem from '@material-ui/core/ListItem';
 
 export default class Todo extends Component {
   /**
@@ -16,13 +16,13 @@ export default class Todo extends Component {
    */
   render() {
     return (
-      <ListGroupItem
+      <ListItem
         as="li"
         onClick={e => this.props.update(e, this.props.id)}
         className={"todo " + (this.props.completed ? "completed" : "")}
       >
         {this.props.task}
-      </ListGroupItem>
+      </ListItem>
     );
   }
 }
