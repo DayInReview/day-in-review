@@ -56,18 +56,6 @@ class TodoList extends Component {
 
     return(
       <div className="TodoList">
-        {/* <div>
-          <input
-            id="todo-input"
-            type="text"
-            value={this.state.todo}
-            onChange={({ target }) => this.setState({todo: target.value})}
-          />
-          <button type="button" onClick={createTodo}>
-            Add
-          </button>
-        </div> */}
-
         {/* Add Todo */}
         <InputGroup className="mb-3">
           <FormControl
