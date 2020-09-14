@@ -69,17 +69,16 @@ export default class TodoList extends Component {
             aria-describedby="basic-addon2"
             onChange={({ target }) => this.setState({todo: target.value})}
           />
-          <Input.Append>
-            <Button variant="outline-secondary" onClick={createTodo}>
-              Add
-            </Button>
-          </Input.Append>
+          <Button variant="outline-secondary" onClick={createTodo}>
+            Add
+          </Button>
         </Input>
 
         {/* List of Todos */}
         <List>
-          {this.state.todos.map(({ _id, task, completed }) => (
+          {this.state.todos.map(({ _id, task, completed }, i) => (
             <Todo 
+              key={i}
               id={_id}
               completed={completed}
               task={task}

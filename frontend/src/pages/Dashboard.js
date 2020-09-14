@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import './Dashboard.css';
-import Widget from '../components/Widget'
 import {
   Grid
 } from '@material-ui/core'
+import Widget from '../components/Widget'
 
 export default class Dashboard extends Component {
   render() {
