@@ -10,7 +10,7 @@ import './App.css';
 import Dashboard from './pages/Dashboard';
 import TodoList from './pages/TodoList';
 
-class App extends Component {
+export default class App extends Component {
   render() {
     return (
       <Router>
@@ -36,5 +36,3 @@ class App extends Component {
     );
   }
 }
-
-export default App;

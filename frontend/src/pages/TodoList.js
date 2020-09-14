@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import './TodoList.css';
 import TodoListAPI from "./TodoListAPI";
+import Todo from "../components/Todo";
+
+import {ListGroup, InputGroup, FormControl, Button} from 'react-bootstrap/';
 
 class TodoList extends Component {
   constructor(props) {
@@ -53,7 +56,7 @@ class TodoList extends Component {
 
     return(
       <div className="TodoList">
-        <div>
+        {/* <div>
           <input
             id="todo-input"
             type="text"
@@ -63,19 +66,35 @@ class TodoList extends Component {
           <button type="button" onClick={createTodo}>
             Add
           </button>
-        </div>
+        </div> */}
 
-        <ul>
-          {this.state.todos.map(({ _id, task, completed }, i) => (
-            <li
-              key={i}
-              onClick={e => updateTodo(e, _id)}
-              className={completed ? "completed" : ""}
-            >
-              {task} <span onClick={e => deleteTodo(e, _id)}>X</span>
-            </li>
+        {/* Add Todo */}
+        <InputGroup className="mb-3">
+          <FormControl
+            placeholder="New todo"
+            aria-label="New todo"
+            aria-describedby="basic-addon2"
+            onChange={({ target }) => this.setState({todo: target.value})}
+          />
+          <InputGroup.Append>
+            <Button variant="outline-secondary" onClick={createTodo}>
+              Add
+            </Button>
+          </InputGroup.Append>
+        </InputGroup>
+
+        {/* List of Todos */}
+        <ListGroup>
+          {this.state.todos.map(({ _id, task, completed }) => (
+            <Todo 
+              id={_id}
+              completed={completed}
+              task={task}
+              delete={deleteTodo}
+              update={updateTodo}
+            />
           ))}
-        </ul>
+        </ListGroup>
       </div>
     );
   }
