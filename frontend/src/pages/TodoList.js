@@ -40,6 +40,7 @@ export default class TodoList extends Component {
       }
       const newTodo = await TodoListAPI.createTodo(this.state.todo)
       this.setState({todos: [...this.state.todos, newTodo]})
+      this.setState({todo: ''})
     }
   
     const deleteTodo = async (e, id) => {
@@ -62,17 +63,17 @@ export default class TodoList extends Component {
     return(
       <div className="TodoList">
         {/* Add Todo */}
-        <Input className="mb-3">
-          <FormControl
-            placeholder="New todo"
-            aria-label="New todo"
-            aria-describedby="basic-addon2"
-            onChange={({ target }) => this.setState({todo: target.value})}
-          />
-          <Button variant="outline-secondary" onClick={createTodo}>
-            Add
-          </Button>
+        <Input 
+          className="mb-3"
+          placeholder="New todo"
+          aria-label="New todo"
+          value={this.state.todo}
+          onChange={({ target }) => this.setState({todo: target.value})}
+        >
         </Input>
+        <Button variant="outline-secondary" onClick={e => createTodo(e)}>
+          Add
+        </Button>
 
         {/* List of Todos */}
         <List>
