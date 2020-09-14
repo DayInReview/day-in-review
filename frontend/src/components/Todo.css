@@ -1,0 +1,11 @@
+.todo {
+    cursor: pointer;
+}
+
+.completed {
+    text-decoration: line-through;
+}
+
+li:hover {
+    opacity: 0.5;
+}
