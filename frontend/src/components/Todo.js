@@ -15,6 +15,9 @@ const styles = theme => ({
   root: {
     cursor: 'pointer',
   },
+  completed: {
+    textDecoration: 'line-through',
+  }
 });
 class Todo extends Component {
   /**
@@ -31,12 +34,13 @@ class Todo extends Component {
     const { classes } = this.props;
     return (
       <ListItem
+        button
         className={classes.root}
         onClick={e => this.props.update(e, this.props.id)}
       >
         <ListItemText
+          className = {this.props.completed ? classes.completed : null}
           primary={this.props.task}
-          secondary={this.props.completed ? 'Completed': 'Not completed'}
         />
         <ListItemSecondaryAction>
           <IconButton edge="end" aria-label="delete" onClick={e => this.props.delete(e, this.props.id)}>
