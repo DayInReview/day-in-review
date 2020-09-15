@@ -39,7 +39,7 @@ class Todo extends Component {
         onClick={e => this.props.update(e, this.props.id)}
       >
         <ListItemText
-          className = {this.props.completed ? classes.completed : null}
+          className={this.props.completed ? classes.completed : null}
           primary={this.props.task}
         />
         <ListItemSecondaryAction>
