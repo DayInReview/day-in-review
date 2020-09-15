@@ -3,7 +3,11 @@ import './TodoList.css';
 import TodoListAPI from "./TodoListAPI";
 import Todo from "../components/Todo";
 
-import {ListGroup, InputGroup, FormControl, Button} from 'react-bootstrap/';
+import {
+  List,
+  Input,
+  Button
+} from '@material-ui/core'
 
 export default class TodoList extends Component {
   constructor(props) {
@@ -35,6 +39,7 @@ export default class TodoList extends Component {
       }
       const newTodo = await TodoListAPI.createTodo(this.state.todo)
       this.setState({todos: [...this.state.todos, newTodo]})
+      this.setState({todo: ''})
     }
   
     const deleteTodo = async (e, id) => {
@@ -57,24 +62,23 @@ export default class TodoList extends Component {
     return(
       <div className="TodoList">
         {/* Add Todo */}
-        <InputGroup className="mb-3">
-          <FormControl
-            placeholder="New todo"
-            aria-label="New todo"
-            aria-describedby="basic-addon2"
-            onChange={({ target }) => this.setState({todo: target.value})}
-          />
-          <InputGroup.Append>
-            <Button variant="outline-secondary" onClick={createTodo}>
-              Add
-            </Button>
-          </InputGroup.Append>
-        </InputGroup>
+        <Input 
+          className="mb-3"
+          placeholder="New todo"
+          aria-label="New todo"
+          value={this.state.todo}
+          onChange={({ target }) => this.setState({todo: target.value})}
+        >
+        </Input>
+        <Button variant="outline-secondary" onClick={e => createTodo(e)}>
+          Add
+        </Button>
 
         {/* List of Todos */}
-        <ListGroup>
-          {this.state.todos.map(({ _id, task, completed }) => (
+        <List>
+          {this.state.todos.map(({ _id, task, completed }, i) => (
             <Todo 
+              key={i}
               id={_id}
               completed={completed}
               task={task}
@@ -82,7 +86,7 @@ export default class TodoList extends Component {
               update={updateTodo}
             />
           ))}
-        </ListGroup>
+        </List>
       </div>
     );
   }

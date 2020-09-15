@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import './Dashboard.css';
+import {
+  Grid
+} from '@material-ui/core'
 import Widget from '../components/Widget'
 
 export default class Dashboard extends Component {
@@ -18,9 +21,9 @@ export default class Dashboard extends Component {
 
     return (
       // Row of Widgets
-      <div className="row">
+      <Grid container spacing={2}>
         {widgets}
-      </div>
+      </Grid>
     );
   }
 }
