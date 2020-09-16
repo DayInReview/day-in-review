@@ -62,17 +62,19 @@ export default class TodoList extends Component {
     return(
       <div className="TodoList">
         {/* Add Todo */}
-        <Input 
-          className="mb-3"
-          placeholder="New todo"
-          aria-label="New todo"
-          value={this.state.todo}
-          onChange={({ target }) => this.setState({todo: target.value})}
-        >
-        </Input>
-        <Button variant="outline-secondary" onClick={e => createTodo(e)}>
-          Add
-        </Button>
+        <form onSubmit={e => createTodo(e)}>
+          <Input 
+            className="mb-3"
+            placeholder="New todo"
+            aria-label="New todo"
+            value={this.state.todo}
+            onChange={({ target }) => this.setState({todo: target.value})}
+          >
+          </Input>
+          <Button type="submit" variant="outline-secondary">
+            Add
+          </Button>
+        </form>
 
         {/* List of Todos */}
         <List>
