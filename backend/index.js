@@ -11,6 +11,11 @@ const users = require("./routes/users");
 
 // Middleware
 app.use(bodyParser.json()); // telling the app that we are going to use json to handle incoming payload
+app.use(
+  bodyParser.urlencoded({
+    extended: false
+  })
+);
 app.use(cors());
 app.use(passport.initialize());
 require("./passport")(passport);  // Configures passport
