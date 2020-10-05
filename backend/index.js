@@ -3,10 +3,18 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express(); // generate an app object
 const db = require("./models/"); // MongoDB models
+const passport = require("passport");
 const PORT = process.env.PORT || 3001;
 
+// Routes
+const users = require("./routes/users");
+
+// Middleware
 app.use(bodyParser.json()); // telling the app that we are going to use json to handle incoming payload
 app.use(cors());
+app.use(passport.initialize());
+require("./passport")(passport);  // Configures passport
+app.use("/users", users);
 
 function success(res, payload) {
   return res.status(200).json(payload);
