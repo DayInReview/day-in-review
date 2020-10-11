@@ -1,0 +1,26 @@
+{
+  "name": "day-in-review",
+  "version": "1.0.0",
+  "description": "Full Day In Review application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client": "npm start --prefix client",
+    "server": "npm run start --prefix server",
+    "server-dev": "npm run dev --prefix server",
+    "dev": "concurrently \"npm run client\" \"npm run server-dev\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DayInReview/day-in-review.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DayInReview/day-in-review/issues"
+  },
+  "homepage": "https://github.com/DayInReview/day-in-review#readme",
+  "devDependencies": {
+    "concurrently": "^5.3.0"
+  }
+}

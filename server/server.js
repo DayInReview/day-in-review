@@ -4,7 +4,7 @@ const cors = require("cors");
 const app = express(); // generate an app object
 const db = require("./models/"); // MongoDB models
 const passport = require("passport");
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 5000;
 
 // Routes
 const users = require("./routes/users");
@@ -19,13 +19,13 @@ app.use(
 app.use(cors());
 app.use(passport.initialize());
 require("./passport")(passport);  // Configures passport
-app.use("/users", users);
+app.use("/api/users", users);
 
 function success(res, payload) {
   return res.status(200).json(payload);
 }
 
-app.get("/todos", async (req, res, next) => {
+app.get("/api/todos", async (req, res, next) => {
   try {
     const todos = await db.Todo.find({});
     return success(res, todos);
@@ -34,7 +34,7 @@ app.get("/todos", async (req, res, next) => {
   }
 });
 
-app.post("/todos", async (req, res, next) => {
+app.post("/api/todos", async (req, res, next) => {
   try {
     const todo = await db.Todo.create(req.body);
     return success(res, todo);
@@ -43,7 +43,7 @@ app.post("/todos", async (req, res, next) => {
   }
 });
 
-app.put("/todos/:id", async (req, res, next) => {
+app.put("/api/todos/:id", async (req, res, next) => {
   try {
     const todo = await db.Todo.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -54,7 +54,7 @@ app.put("/todos/:id", async (req, res, next) => {
   }
 });
 
-app.delete("/todos/:id", async (req, res, next) => {
+app.delete("/api/todos/:id", async (req, res, next) => {
   try {
     await db.Todo.findByIdAndRemove(req.params.id);
     return success(res, "todo deleted!");
@@ -71,6 +71,6 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  // listening on port 3000
+  // listening on port 5000
   console.log(`listening on port ${PORT}`); // print this when the server starts
 });
