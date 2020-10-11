@@ -10,4 +10,7 @@ mongoose.connect(`mongodb+srv://${db.user}:${db.password}@dayinreview.lmllq.gcp.
 mongoose.set("debug", true); // enabling debugging information to be printed to the console for debugging purposes
 mongoose.Promise = Promise; // setting mongoose's Promise to use Node's Promise
 
-module.exports.Todo = require("./todo"); // requiring the todo model
+module.exports = {
+  Todo: require("./todo"),
+  User: require("./user"),
+}
