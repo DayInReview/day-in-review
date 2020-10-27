@@ -1,3 +1,5 @@
+require('dotenv').config(); // Sets all environment variables in the .env flie
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");

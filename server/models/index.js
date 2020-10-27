@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
-const config = require("../config");
-const db = config.database;
-mongoose.connect(`mongodb+srv://${db.user}:${db.password}@dayinreview.lmllq.gcp.mongodb.net/todo_list?retryWrites=true&w=majority`, {
+mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@dayinreview.lmllq.gcp.mongodb.net/todo_list?retryWrites=true&w=majority`, {
   // connecting to the mongodb database name: "todo-app" locally
   keepAlive: true, // keeping the connection alive
   useNewUrlParser: true,
