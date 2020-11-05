@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const secretOrKey = require("../config").secretOrKey;
+const secretOrKey = process.env.SECRET_OR_KEY;
 
 // Input validation
 const validateRegisterInput = require("../validation/register");
@@ -77,7 +77,7 @@ router.post("/login", (req, res) => {
       if (isMatch) {
         // Create JWT Payload
         const payload = {
-          is: user.id,
+          id: user.id,
           name: user.name
         }
         // Sign token
