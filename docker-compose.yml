@@ -27,7 +27,7 @@ services:
     command: npm start
     volumes:
       - ./client/:/usr/src/app
-      - /usr/app/node_modules
+      - /usr/src/app/node_modules
     depends_on:
       - server
     ports:
