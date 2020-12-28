@@ -19,7 +19,7 @@ export default function TodoList(props) {
       setTodos(todos);
     }
     fetchTodoAndSetTodos();
-  })
+  }, [])
 
   const createTodo = async e => {
     e.preventDefault()
