@@ -36,14 +36,14 @@ export default function Todo(props) {
     <ListItem
       button
       className={classes.root}
-      onClick={e => this.props.update(e, this.props.id)}
+      onClick={e => props.update(e, props.id)}
     >
       <ListItemText
-        className={this.props.completed ? classes.completed : null}
-        primary={this.props.task}
+        className={props.completed ? classes.completed : null}
+        primary={props.task}
       />
       <ListItemSecondaryAction>
-        <IconButton edge="end" aria-label="delete" onClick={e => this.props.delete(e, this.props.id)}>
+        <IconButton edge="end" aria-label="delete" onClick={e => props.delete(e, props.id)}>
           <DeleteIcon />
         </IconButton>
       </ListItemSecondaryAction>
