@@ -1,6 +1,9 @@
 # Database config
 server/config.js
 
+# VS Code
+.vscode/
+
 # Logs
 logs
 *.log
