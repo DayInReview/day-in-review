@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './Todo.css';
 
 import {
@@ -8,10 +8,10 @@ import {
   IconButton
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 
-const styles = theme => ({
+const useStyles = makeStyles({
   root: {
     cursor: 'pointer',
   },
@@ -19,7 +19,8 @@ const styles = theme => ({
     textDecoration: 'line-through',
   }
 });
-class Todo extends Component {
+
+export default function Todo(props) {
   /**
    * Properties:
    * 
@@ -30,26 +31,22 @@ class Todo extends Component {
    * delete: function to delete from database
    * update: function to update todo
    */
-  render() {
-    const { classes } = this.props;
-    return (
-      <ListItem
-        button
-        className={classes.root}
-        onClick={e => this.props.update(e, this.props.id)}
-      >
-        <ListItemText
-          className={this.props.completed ? classes.completed : null}
-          primary={this.props.task}
-        />
-        <ListItemSecondaryAction>
-          <IconButton edge="end" aria-label="delete" onClick={e => this.props.delete(e, this.props.id)}>
-            <DeleteIcon />
-          </IconButton>
-        </ListItemSecondaryAction>
-      </ListItem>
-    );
-  }
+  const classes = useStyles(props);
+  return (
+    <ListItem
+      button
+      className={classes.root}
+      onClick={e => this.props.update(e, this.props.id)}
+    >
+      <ListItemText
+        className={this.props.completed ? classes.completed : null}
+        primary={this.props.task}
+      />
+      <ListItemSecondaryAction>
+        <IconButton edge="end" aria-label="delete" onClick={e => this.props.delete(e, this.props.id)}>
+          <DeleteIcon />
+        </IconButton>
+      </ListItemSecondaryAction>
+    </ListItem>
+  );
 }
-
-export default withStyles(styles)(Todo);
