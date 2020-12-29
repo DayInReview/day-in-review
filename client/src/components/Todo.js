@@ -1,5 +1,5 @@
 import React from 'react';
-import './Todo.css';
+import './Todo.scss';
 
 import {
   ListItem,

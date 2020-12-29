@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { makeStyles } from '@material-ui/core/styles';
-import './App.css';
+import './App.scss';
 import { AuthContext } from './context/auth';
 
 import Dashboard from './pages/Dashboard';

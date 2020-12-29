@@ -1,5 +1,5 @@
 import React from 'react';
-import './Dashboard.css';
+import './Dashboard.scss';
 import {
   Grid
 } from '@material-ui/core'
