@@ -7,9 +7,15 @@ import { useAuth } from '../context/auth';
 export default function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { setAuthToken } = useAuth();
-  const referer = props.location.state.referer || '/';
+  const { authToken, setAuthToken } = useAuth();
+  const [isLoggedIn, setIsLoggedIn] = useState(!!authToken);
+  
+  let referer;
+  try {
+    referer = props.location.state.referer;
+  } catch (err) {
+    referer = '/';
+  }
 
   const loginUser = async (e) => {
     e.preventDefault();
