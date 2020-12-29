@@ -47,8 +47,23 @@ export default function App(props) {
     setAuthToken(token);
   }
 
+  const clearToken = () => {
+    localStorage.removeItem('token');
+    setAuthToken(null);
+  }
+
+  // Login/Logout
+  const loginLogout = () => {
+    if (authToken) {
+      // Logout
+      clearToken();
+    } else {
+      window.location.assign('/login');
+    }
+  }
+
   return (
-    <AuthContext.Provider value={{ authToken, setAuthToken: setToken }}>
+    <AuthContext.Provider value={{ authToken, setAuthToken: setToken, clearAuthToken: clearToken }}>
       <Router>
         <AppBar className={classes.root} position="static">
           <Toolbar>
@@ -58,7 +73,7 @@ export default function App(props) {
             <Typography variant="h6" className={classes.title} onClick={() => {window.location.assign('/')}}>
               Day in Review
             </Typography>
-            <Button color="inherit">Login</Button>
+            <Button color="inherit" onClick={ loginLogout }>{ authToken ? "Logout" : "Login" }</Button>
           </Toolbar>
         </AppBar>
         {/* Main Body */}
