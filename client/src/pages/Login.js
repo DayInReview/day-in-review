@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
-import { TextField, Button } from '@material-ui/core';
+import { Typography, TextField, Button } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import LoginAPI from './LoginAPI';
 import { useAuth } from '../context/auth';
 
 export default function Login(props) {
+  const { authToken, setAuthToken } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { authToken, setAuthToken } = useAuth();
   const [isLoggedIn, setIsLoggedIn] = useState(!!authToken);
+  const [redirectRegister, setRedirectRegister] = useState(false);
   
   let referer;
   try {
@@ -27,25 +29,52 @@ export default function Login(props) {
     }
   }
 
+  const registerUser = async (e) => {
+    e.preventDefault();
+    setRedirectRegister(true);
+  }
+  
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      '& .MuiTextField-root': {
+        margin: theme.spacing(1),
+        width: '50ch',
+      },
+      '& .MuiButton-root': {
+        margin: theme.spacing(1),
+      },
+    },
+  }));
+  const classes = useStyles();
+  
   if (isLoggedIn) {
+    console.log(referer);
     return <Redirect to={referer} />
   }
 
+  if (redirectRegister) {
+    return <Redirect to={{
+        pathname: "/register",
+        state: { email, password }
+      }}
+    />
+  }
+
   return (
-    <form onSubmit={e => loginUser(e)}>
-      <TextField
-        id="standard-basic"
-        label="Email"
-        onChange={({ target }) => setEmail(target.value)}
-      />
-      <TextField
-        id="standard-basic"
-        label="Password"
-        onChange={({ target }) => setPassword(target.value)}
-      />
-      <Button type="submit" variant="contained">
-          Login
-      </Button>
+    <form className={classes.root} onSubmit={(e) => loginUser(e)}>
+      <Typography variant='h4'>
+        Login
+      </Typography>
+      <div>
+        <TextField id="standard-basic" label="Email" onChange={({ target }) => setEmail(target.value)} />
+      </div>
+      <div>
+        <TextField id="standard-basic" label="Password" onChange={({ target }) => setPassword(target.value)} />
+      </div>
+      <span>
+        <Button variant="contained" onClick={(e) => registerUser(e)}>Register</Button>
+        <Button variant="contained" color="primary" type="submit">Login</Button>
+      </span>
     </form>
   );
 }
