@@ -7,8 +7,8 @@ import { useAuth } from '../context/auth';
 
 export default function Login(props) {
   const { authToken, setAuthToken } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState(props.location.state ? props.location.state.email : "");
+  const [password, setPassword] = useState(props.location.state ? props.location.state.password : "");
   const [isLoggedIn, setIsLoggedIn] = useState(!!authToken);
   const [redirectRegister, setRedirectRegister] = useState(false);
   
@@ -66,10 +66,10 @@ export default function Login(props) {
         Login
       </Typography>
       <div>
-        <TextField id="standard-basic" label="Email" onChange={({ target }) => setEmail(target.value)} />
+        <TextField id="standard-basic" label="Email" value={email} onChange={({ target }) => setEmail(target.value)} />
       </div>
       <div>
-        <TextField id="standard-basic" label="Password" onChange={({ target }) => setPassword(target.value)} />
+        <TextField id="standard-basic" label="Password" type="password" value={password} onChange={({ target }) => setPassword(target.value)} />
       </div>
       <span>
         <Button variant="contained" onClick={(e) => registerUser(e)}>Register</Button>

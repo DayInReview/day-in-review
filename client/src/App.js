@@ -82,7 +82,7 @@ export default function App(props) {
         <div className={classes.body}>
           {/* Pages */}
           <Switch>
-            <Route exact path="/login" component={Login} />
+          <Route exact path="/login" render={(props) => <Login {...props} />} />
             <Route exact path="/register" render={(props) => <Register {...props} />} />
             <PrivateRoute exact path={["/", "/dashboard"]} component={Dashboard} />
             <PrivateRoute exact path="/todo" component={TodoList} />
