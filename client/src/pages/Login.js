@@ -9,6 +9,7 @@ export default function Login(props) {
   const { authToken, setAuthToken } = useAuth();
   const [email, setEmail] = useState(props.location.state ? props.location.state.email : "");
   const [password, setPassword] = useState(props.location.state ? props.location.state.password : "");
+  const fromRegister = props.location.state ? props.location.state.fromRegister : false;
   const [errors, setErrors] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(!!authToken);
   const [redirectRegister, setRedirectRegister] = useState(false);
@@ -21,7 +22,9 @@ export default function Login(props) {
   }
 
   const loginUser = async (e) => {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
     const res = await LoginAPI.login(email, password);
     if (res.success) {
       console.log(`token: ${res.data}`);
@@ -54,13 +57,17 @@ export default function Login(props) {
     console.log(referer);
     return <Redirect to={referer} />
   }
-
+  
   if (redirectRegister) {
     return <Redirect to={{
-        pathname: "/register",
-        state: { email, password }
-      }}
+      pathname: "/register",
+      state: { email, password }
+    }}
     />
+  }
+
+  if (fromRegister) {
+    loginUser();
   }
 
   return (

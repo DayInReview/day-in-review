@@ -38,7 +38,7 @@ export default function Register(props) {
   if (isRegistered) {
     return <Redirect to={{
       pathname: "/login",
-      state: { email, password }
+      state: { email, password, fromRegister: true }
     }}
   />
   }
