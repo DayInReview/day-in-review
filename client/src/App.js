@@ -20,6 +20,7 @@ import { AuthContext } from './context/auth';
 import Dashboard from './pages/Dashboard';
 import TodoList from './pages/TodoList';
 import Login from './pages/Login';
+import Register from './pages/Register';
 
 const useStyles = makeStyles({
   root: {
@@ -65,7 +66,7 @@ export default function App(props) {
   return (
     <AuthContext.Provider value={{ authToken, setAuthToken: setToken, clearAuthToken: clearToken }}>
       <Router>
-        <AppBar className={classes.root} position="static">
+        <AppBar className={classes.root}>
           <Toolbar>
             <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
               <MenuIcon />
@@ -76,11 +77,13 @@ export default function App(props) {
             <Button color="inherit" onClick={ loginLogout }>{ authToken ? "Logout" : "Login" }</Button>
           </Toolbar>
         </AppBar>
+        <Toolbar />
         {/* Main Body */}
         <div className={classes.body}>
           {/* Pages */}
           <Switch>
-            <Route exact path="/login" component={Login} />
+          <Route exact path="/login" render={(props) => <Login {...props} />} />
+            <Route exact path="/register" render={(props) => <Register {...props} />} />
             <PrivateRoute exact path={["/", "/dashboard"]} component={Dashboard} />
             <PrivateRoute exact path="/todo" component={TodoList} />
           </Switch>
