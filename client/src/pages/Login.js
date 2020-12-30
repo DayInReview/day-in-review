@@ -9,6 +9,7 @@ export default function Login(props) {
   const { authToken, setAuthToken } = useAuth();
   const [email, setEmail] = useState(props.location.state ? props.location.state.email : "");
   const [password, setPassword] = useState(props.location.state ? props.location.state.password : "");
+  const [errors, setErrors] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(!!authToken);
   const [redirectRegister, setRedirectRegister] = useState(false);
   
@@ -21,11 +22,13 @@ export default function Login(props) {
 
   const loginUser = async (e) => {
     e.preventDefault();
-    const token = await LoginAPI.login(email, password);
-    if (token) {
-      console.log(`token: ${token}`);
-      setAuthToken(token);
+    const res = await LoginAPI.login(email, password);
+    if (res.success) {
+      console.log(`token: ${res.data}`);
+      setAuthToken(res.data);
       setIsLoggedIn(true);
+    } else {
+      setErrors(res.data);
     }
   }
 
@@ -66,10 +69,23 @@ export default function Login(props) {
         Login
       </Typography>
       <div>
-        <TextField id="standard-basic" label="Email" value={email} onChange={({ target }) => setEmail(target.value)} />
+        <TextField
+          label="Email"
+          error={!!errors.email}
+          helperText={errors.email}
+          value={email}
+          onChange={({ target }) => setEmail(target.value)}
+        />
       </div>
       <div>
-        <TextField id="standard-basic" label="Password" type="password" value={password} onChange={({ target }) => setPassword(target.value)} />
+        <TextField
+          label="Password"
+          error={!!errors.password}
+          helperText={errors.password}
+          type="password"
+          value={password}
+          onChange={({ target }) => setPassword(target.value)}
+        />
       </div>
       <span>
         <Button variant="contained" onClick={(e) => registerUser(e)}>Register</Button>

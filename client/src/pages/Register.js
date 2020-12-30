@@ -6,16 +6,19 @@ import RegisterAPI from './RegisterAPI';
 
 export default function Register(props) {
   const [email, setEmail] = useState(props.location.state.email || "");
-  const [password, setpassword] = useState(props.location.state.password || "");
+  const [password, setPassword] = useState(props.location.state.password || "");
   const [password2, setPassword2] = useState("");
   const [name, setName] = useState("");
+  const [errors, setErrors] = useState({});
   const [isRegistered, setIsRegistered] = useState(false);
 
   const registerUser = async (e) => {
     e.preventDefault();
-    const user = await RegisterAPI.register(name, email, password, password2);
-    if (user) {
+    const res = await RegisterAPI.register(name, email, password, password2);
+    if (res.success) {
       setIsRegistered(true);
+    } else {
+      setErrors(res.data);
     }
   }
 
@@ -46,16 +49,40 @@ export default function Register(props) {
         Register
       </Typography>
       <div>
-        <TextField id="standard-basic" label="Name" onChange={({ target }) => setName(target.value)} />
+        <TextField
+          label="Name"
+          error={!!errors.name}
+          helperText={errors.name}
+          onChange={({ target }) => setName(target.value)}
+        />
       </div>
       <div>
-        <TextField id="standard-basic" label="Email" value={email} onChange={({ target }) => setEmail(target.value)} />
+        <TextField
+          label="Email"
+          error={!!errors.email}
+          helperText={errors.email}
+          value={email}
+          onChange={({ target }) => setEmail(target.value)}
+        />
       </div>
       <div>
-        <TextField id="standard-basic" label="Password" type="password" value={password} onChange={({ target }) => setpassword(target.value)} />
+        <TextField
+          label="Password"
+          error={!!errors.password}
+          helperText={errors.password}
+          type="password"
+          value={password}
+          onChange={({ target }) => setPassword(target.value)}
+        />
       </div>
       <div>
-        <TextField id="standard-basic" label="Confirm Password" type="password" onChange={({ target }) => setPassword2(target.value)} />
+        <TextField
+          label="Confirm Password"
+          error={!!errors.password2}
+          helperText={errors.password2}
+          type="password"
+          onChange={({ target }) => setPassword2(target.value)}
+        />
       </div>
       <span>
         <Button variant="contained" color="primary" type="submit">Register</Button>

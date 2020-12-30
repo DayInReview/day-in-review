@@ -15,6 +15,7 @@ async function register(name, email, password, password2) {
       data: user
     };
   } catch (err) {
+    console.log(err.response.data);
     return {
       success: false,
       data: err.response.data
