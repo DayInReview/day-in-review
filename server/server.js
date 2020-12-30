@@ -24,7 +24,7 @@ app.use(passport.initialize());
 require("./passport")(passport);  // Configures passport
 
 app.use("/api/users", users);
-app.use("/api/todos", todos);
+app.use("/api/todos", passport.authenticate('jwt', { session: false }), todos);
 
 app.use((err, req, res, next) => {
   return res.status(err.status || 400).json({

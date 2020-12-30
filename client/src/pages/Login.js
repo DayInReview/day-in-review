@@ -27,7 +27,6 @@ export default function Login(props) {
     }
     const res = await LoginAPI.login(email, password);
     if (res.success) {
-      console.log(`token: ${res.data}`);
       setAuthToken(res.data);
       setIsLoggedIn(true);
     } else {
@@ -54,7 +53,6 @@ export default function Login(props) {
   const classes = useStyles();
   
   if (isLoggedIn) {
-    console.log(referer);
     return <Redirect to={referer} />
   }
   

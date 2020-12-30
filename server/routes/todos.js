@@ -9,7 +9,7 @@ const router = express.Router();
  */
 router.post("/", async (req, res, next) => {
   try {
-    const todo = await Todo.create(req.body);
+    const todo = await Todo.create({...req.body, user_id: req.user.id});
     return res.status(200).json(todo);
   } catch (err) {
     next({ status: 400, message: "Failed to create todo" });
@@ -23,7 +23,7 @@ router.post("/", async (req, res, next) => {
  */
 router.get("/", async (req, res, next) => {
   try {
-    const todos = await Todo.find({});
+    const todos = await Todo.find({user_id: req.user._id});
     return res.status(200).json(todos);
   } catch (err) {
     console.log(err);
