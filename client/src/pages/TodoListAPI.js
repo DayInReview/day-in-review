@@ -9,9 +9,9 @@ async function createTodo(task) {
   return newTodo
 }
 
-async function deleteTodo(id) {
-  const message = await API.delete(`${API_URL}${id}`)
-  return message
+async function getAllTodos() {
+  const { data: todos } = await API.get(API_URL)
+  return todos
 }
 
 async function updateTodo(id, payload) {
@@ -19,9 +19,9 @@ async function updateTodo(id, payload) {
   return newTodo
 }
 
-async function getAllTodos() {
-  const { data: todos } = await API.get(API_URL)
-  return todos
+async function deleteTodo(id) {
+  const message = await API.delete(`${API_URL}${id}`)
+  return message
 }
 
-export default { createTodo, deleteTodo, updateTodo, getAllTodos }
+export default { createTodo, getAllTodos, updateTodo, deleteTodo };
