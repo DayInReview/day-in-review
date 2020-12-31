@@ -21,10 +21,6 @@ const courseSchema = new Schema({
     type: String,
     required: true,
   },
-  semester: {
-    type: String,
-    required: true,
-  },
   cutoffs: {
     type: Object,
     default: defaultCutoffs,

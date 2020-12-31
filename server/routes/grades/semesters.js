@@ -9,7 +9,7 @@ const router = express.Router();
  */
 router.post('/', async (req, res, next) => {
   try {
-    const semester = await Semester.create(req.body);
+    const semester = await Semester.create({ ...req.body, user_id: req.user.id });
     return res.status(200).json(semester);
   } catch (err) {
     next({ status: 400, message: 'Failed to create semester' });

@@ -18,12 +18,12 @@ router.post('/', async (req, res, next) => {
 
 /**
  * @route GET api/grades/courses
- * @description Gets all courses from a semester
+ * @description Gets all courses
  * @access private
  */
-router.get('/', async (req, res, next) => {
+router.get('/:semester', async (req, res, next) => {
   try {
-    const courses = await Course.find(req.body);
+    const courses = await Course.find({ semester_id: req.params.semester });
     return res.status(200).json(courses);
   } catch (err) {
     console.log(err);
