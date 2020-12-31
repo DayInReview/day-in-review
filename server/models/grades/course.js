@@ -29,7 +29,7 @@ const courseSchema = new Schema({
     type: Object,
     default: defaultCutoffs,
   },
-  user_id: {
+  semester_id: {
     type: Schema.Types.ObjectId,
     required: true,
   }

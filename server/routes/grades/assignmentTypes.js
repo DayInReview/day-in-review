@@ -1,9 +1,9 @@
 const express = require('express');
-const { AssignmentType } = require('../models');
+const { AssignmentType } = require('../../models');
 const router = express.Router();
 
 /**
- * @route POST api/assignment-types
+ * @route POST api/grades/assignment-types
  * @description Creates assignment type
  * @access private
  */
@@ -17,7 +17,7 @@ router.post('/', async (req, res, next) => {
 });
 
 /**
- * @route GET api/assignment-types
+ * @route GET api/grades/assignment-types
  * @description Gets all assignment types for a course
  * @access private
  */
@@ -31,7 +31,7 @@ router.get('/', async (req, res, next) => {
 });
 
 /**
- * @route PUT api/assignment-types
+ * @route PUT api/grades/assignment-types
  * @description Updates an assignment type
  * @access private
  */
@@ -47,7 +47,7 @@ router.put('/:id', async (req, res, next) => {
 });
 
 /**
- * @route DELETE api/assignment-types
+ * @route DELETE api/grades/assignment-types
  * @description Deletes an assignment type
  * @access private
  */

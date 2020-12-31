@@ -1,15 +1,15 @@
 const express = require('express');
-const { Course } = require('../models');
+const { Course } = require('../../models');
 const router = express.Router();
 
 /**
- * @route POST api/courses
+ * @route POST api/grades/courses
  * @description Creates course
  * @access private
  */
 router.post('/', async (req, res, next) => {
   try {
-    const course = await Course.create({ ...req.body, user_id: req.user.id });
+    const course = await Course.create(req.body);
     return res.status(200).json(course);
   } catch (err) {
     next({ status: 400, message: 'Failed to create course' });
@@ -17,13 +17,13 @@ router.post('/', async (req, res, next) => {
 });
 
 /**
- * @route GET api/courses
- * @description Gets all courses
+ * @route GET api/grades/courses
+ * @description Gets all courses from a semester
  * @access private
  */
 router.get('/', async (req, res, next) => {
   try {
-    const courses = await Course.find({ user_id: req.user.id });
+    const courses = await Course.find(req.body);
     return res.status(200).json(courses);
   } catch (err) {
     console.log(err);
@@ -32,7 +32,7 @@ router.get('/', async (req, res, next) => {
 });
 
 /**
- * @route PUT api/courses
+ * @route PUT api/grades/courses
  * @description Updates a course
  * @access private
  */
@@ -48,7 +48,7 @@ router.put('/:id', async (req, res, next) => {
 });
 
 /**
- * @route DELETE api/courses
+ * @route DELETE api/grades/courses
  * @description Deletes course
  * @access private
  */

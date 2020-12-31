@@ -10,9 +10,10 @@ mongoose.set('useFindAndModify', false);  // Deprecation of certain functions
 mongoose.Promise = Promise; // setting mongoose's Promise to use Node's Promise
 
 module.exports = {
-  Todo: require("./todo"),
-  User: require("./user"),
-  Course: require("./course"),
-  AssignmentType: require("./assignmentType"),
-  Assignment: require("./assignment"),
+  Todo: require("./todos/todo"),
+  User: require("./users/user"),
+  Semester: require("./grades/semester"),
+  Course: require("./grades/course"),
+  AssignmentType: require("./grades/assignmentType"),
+  Assignment: require("./grades/assignment"),
 }

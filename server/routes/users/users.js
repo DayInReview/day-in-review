@@ -5,11 +5,11 @@ const jwt = require("jsonwebtoken");
 const secretOrKey = process.env.SECRET_OR_KEY;
 
 // Input validation
-const validateRegisterInput = require("../validation/register");
-const validateLoginInput = require("../validation/login");
+const validateRegisterInput = require("../../validation/register");
+const validateLoginInput = require("../../validation/login");
 
 // User model
-const User = require("../models").User;
+const User = require("../../models").User;
 
 /**
  * @route POST users/register
