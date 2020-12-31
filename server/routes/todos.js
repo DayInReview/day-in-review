@@ -5,7 +5,7 @@ const router = express.Router();
 /**
  * @route POST api/todos
  * @description Creates todo
- * @access public
+ * @access private
  */
 router.post("/", async (req, res, next) => {
   try {
@@ -19,14 +19,13 @@ router.post("/", async (req, res, next) => {
 /**
  * @route GET api/todos
  * @description Gets all todos
- * @access public
+ * @access private
  */
 router.get("/", async (req, res, next) => {
   try {
-    const todos = await Todo.find({user_id: req.user._id});
+    const todos = await Todo.find({user_id: req.user.id});
     return res.status(200).json(todos);
   } catch (err) {
-    console.log(err);
     next({ status: 400, message: "Failed to get todos" });
   }
 });
@@ -34,7 +33,7 @@ router.get("/", async (req, res, next) => {
 /**
  * @route PUT api/todos
  * @description Updates a todo
- * @access public
+ * @access private
  */
 router.put("/:id", async (req, res, next) => {
   try {
@@ -50,7 +49,7 @@ router.put("/:id", async (req, res, next) => {
 /**
  * @route DELETE api/todos
  * @description deletes todo
- * @access public
+ * @access private
  */
 router.delete("/:id", async (req, res, next) => {
   try {

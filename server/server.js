@@ -11,6 +11,9 @@ const PORT = process.env.PORT || 5000;
 // Routes
 const users = require("./routes/users");
 const todos = require("./routes/todos");
+const courses = require("./routes/courses");
+const assignmentTypes = require("./routes/assignmentTypes");
+const assignments = require("./routes/assignments");
 
 // Middleware
 app.use(bodyParser.json()); // telling the app that we are going to use json to handle incoming payload
@@ -25,6 +28,9 @@ require("./passport")(passport);  // Configures passport
 
 app.use("/api/users", users);
 app.use("/api/todos", passport.authenticate('jwt', { session: false }), todos);
+app.use("/api/courses", passport.authenticate('jwt', { session: false }), courses);
+app.use("/api/assignment-types", passport.authenticate('jwt', { session: false }), assignmentTypes);
+app.use("/api/assignments", passport.authenticate('jwt', { session: false}), assignments);
 
 app.use((err, req, res, next) => {
   return res.status(err.status || 400).json({
