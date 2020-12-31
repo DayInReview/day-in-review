@@ -11,4 +11,7 @@ mongoose.Promise = Promise; // setting mongoose's Promise to use Node's Promise
 module.exports = {
   Todo: require("./todo"),
   User: require("./user"),
+  Course: require("./course"),
+  AssignmentType: require("./assignmentType"),
+  Assignment: require("./assignment"),
 }
