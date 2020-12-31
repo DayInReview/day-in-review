@@ -1,10 +1,10 @@
-import axios from 'axios';
+import API from '../API';
 
-const API_URL = "http://localhost:5000/api/users/login";
+const API_URL = "/users/login";
 
 async function login(email, password) {
   try {
-    const { data: res } = await axios.post(API_URL, {
+    const { data: res } = await API.post(API_URL, {
       email,
       password
     });
