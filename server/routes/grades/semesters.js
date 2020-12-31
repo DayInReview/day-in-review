@@ -9,9 +9,10 @@ const router = express.Router();
  */
 router.post('/', async (req, res, next) => {
   try {
-    const semester = await Semester.create({ ...req.body, user_id: req.user.id });
+    const semester = await Semester.create({ ...req.body.semester, user_id: req.user.id });
     return res.status(200).json(semester);
   } catch (err) {
+    console.log(err);
     next({ status: 400, message: 'Failed to create semester' });
   }
 });
@@ -37,7 +38,7 @@ router.get('/', async (req, res, next) => {
  */
 router.put('/:id', async (req, res, next) => {
   try {
-    const semester = await Semester.findByIdAndUpdate(req.params.id, req.body, {
+    const semester = await Semester.findByIdAndUpdate(req.params.id, req.body.semester, {
       new: true,
     });
     return res.status(200).json(semester);

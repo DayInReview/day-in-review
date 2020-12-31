@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState, cloneElement } from 'react';
 
 import { Dialog, DialogTitle, DialogContent, DialogContentText,
           DialogActions, Button } from '@material-ui/core';
 
 export default function DialogForm(props) {
+  const [submitted, setSubmitted] = useState(false);
   
   const handleClose = () => {
     props.setOpen(false);
+    setSubmitted(false);
   }
 
   return (
@@ -16,13 +18,13 @@ export default function DialogForm(props) {
         <DialogContentText>
           { props.content }
         </DialogContentText>
-        { props.form }
+        { cloneElement(props.form, { submitted, setSubmitted }) }
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">
           Cancel
         </Button>
-        <Button onClick={props.handleSubmit.handler} color="primary">
+        <Button onClick={() => {setSubmitted(true)}} color="primary">
           Add
         </Button>
       </DialogActions>

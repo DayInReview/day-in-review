@@ -167,10 +167,9 @@ export default function Grades(props) {
         <DialogForm
           title="Add New Item"
           content={ formTypes[addType] ? formTypes[addType].content : '' }
-          form={ <AddSemesterForm setHandleSubmit={ setHandleAdd } /> }
+          form={ <AddSemesterForm setSemesters={ setSemesters } /> }
           open={ addOpen }
           setOpen={ setAddOpen }
-          handleSubmit={ handleAdd }
         />
         {/* Add button */}
         <Fab
