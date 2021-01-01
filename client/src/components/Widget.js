@@ -13,14 +13,18 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles({
   root: {
     margin: '0.4rem',
-    borderRadius: '10px',
-    textAlign: 'center'
+    borderRadius: '18px',
+    border: '4px solid white',
+    '&:hover': {
+      transition: 'all 0.2s ease-out',
+      border: '4px solid #00838d',
+    },
   },
   media: {
     height: '20vh'
   },
   content: {
-    height: '12vh',
+    height: '14vh',
     padding: '2rem',
     display: 'flex',
     flexDirection: 'column'
