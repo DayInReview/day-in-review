@@ -18,7 +18,7 @@ export default function DialogForm(props) {
         <DialogContentText>
           { props.content }
         </DialogContentText>
-        { cloneElement(props.form, { submitted, setSubmitted }) }
+        { props.form ? cloneElement(props.form, { submitted, setSubmitted }) : null }
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">

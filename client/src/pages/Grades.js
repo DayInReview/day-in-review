@@ -10,6 +10,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 
 import AddSemesterForm from '../components/grades/AddSemesterForm';
 import DialogForm from '../components/DialogForm';
+import AddCourseForm from '../components/grades/AddCourseForm';
 
 const drawerWidth = 240;
 
@@ -45,23 +46,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const formTypes = {
-  'semester': {
-    content: 'Add a new semester. Give a name (e.g. Fall 2019) and denote if this is your current semester',
-    form: 
-      <AddSemesterForm />
-  },
-  'course': {
-    content: 'Add a new course',
-  },
-  'assignment type': {
-    content: 'Add a new assignment type',
-  },
-  'assignment': {
-    content: 'Add a new assignment',
-  }
-}
-
 export default function Grades(props) {
   // Data states
   const [semesters, setSemesters] = useState([]);
@@ -76,8 +60,24 @@ export default function Grades(props) {
   // UI States
   const [anchorEl, setAnchorEl] = useState(null);
   const [addOpen, setAddOpen] = useState(false);
-  const [addType, setAddType] = useState("");
-  const [handleAdd, setHandleAdd] = useState({});
+  const [addForm, setAddForm] = useState(null);
+
+  const formTypes = {
+    'semester': {
+      content: 'Add a new semester. Give a name (e.g. Fall 2019) and denote if this is your current semester',
+      form: <AddSemesterForm setSemesters={ setSemesters } />
+    },
+    'course': {
+      content: 'Add a new course',
+      form: <AddCourseForm setCourses={ setCourses } />
+    },
+    'assignment type': {
+      content: 'Add a new assignment type',
+    },
+    'assignment': {
+      content: 'Add a new assignment',
+    }
+  }
 
   useEffect(() => {
     const fetchAndSetSemesters = async () => {
@@ -166,8 +166,8 @@ export default function Grades(props) {
         {/* Form Dialog */}
         <DialogForm
           title="Add New Item"
-          content={ formTypes[addType] ? formTypes[addType].content : '' }
-          form={ <AddSemesterForm setSemesters={ setSemesters } /> }
+          content={ addForm ? addForm.content : '' }
+          form={ addForm ? addForm.form : null }
           open={ addOpen }
           setOpen={ setAddOpen }
         />
@@ -185,10 +185,10 @@ export default function Grades(props) {
           open={Boolean(anchorEl)}
           onClose={handleMenuClose}
         >
-          {!!assignmentType ? <MenuItem onClick={() => {setAddOpen(true); setAddType('assignment')}}>Assignment</MenuItem> : null}
-          {!!course ? <MenuItem onClick={() => {setAddOpen(true); setAddType('assignment type')}}>Assignment Type</MenuItem> : null}
-          <MenuItem onClick={() => {setAddOpen(true); setAddType('course')}}>Course</MenuItem>
-          <MenuItem onClick={() => {setAddOpen(true); setAddType('semester')}}>Semester</MenuItem>
+          {!!assignmentType ? <MenuItem onClick={() => {setAddOpen(true); setAddForm('assignment')}}>Assignment</MenuItem> : null}
+          {!!course ? <MenuItem onClick={() => {setAddOpen(true); setAddForm('assignment type')}}>Assignment Type</MenuItem> : null}
+          <MenuItem onClick={() => {setAddOpen(true); setAddForm(formTypes['course'])}}>Course</MenuItem>
+          <MenuItem onClick={() => {setAddOpen(true); setAddForm(formTypes['semester'])}}>Semester</MenuItem>
         </Menu>
       </main>
     </div>
