@@ -11,6 +11,12 @@ export default function DialogForm(props) {
     setSubmitted(false);
   }
 
+  const handleSubmit = () => {
+    setSubmitted(true);
+    props.setOpen(false);
+    props.setAnchorEl(null);
+  }
+
   return (
     <Dialog open={ props.open } onClose={handleClose}>
       <DialogTitle>{ props.title }</DialogTitle>
@@ -24,7 +30,7 @@ export default function DialogForm(props) {
         <Button onClick={handleClose} color="primary">
           Cancel
         </Button>
-        <Button onClick={() => {setSubmitted(true)}} color="primary">
+        <Button onClick={handleSubmit} color="primary">
           Add
         </Button>
       </DialogActions>

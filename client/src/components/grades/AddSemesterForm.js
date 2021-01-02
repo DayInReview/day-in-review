@@ -8,13 +8,6 @@ export default function AddSemesterForm(props) {
   const [semesterName, setSemesterName] = useState("");
   const [checkedCurrent, setCheckedCurrent] = useState(false);
 
-  useEffect(() => {
-    if (props.submitted) {
-      addSemester();
-      props.setSubmitted(false);
-    }
-  }, [props.submitted]);
-
   const addSemester = async () => {
     const newSemester = await GradesAPI.createSemester({
       name: semesterName,
@@ -25,6 +18,13 @@ export default function AddSemesterForm(props) {
       newSemester,
     ]));
   }
+
+  useEffect(() => {
+    if (props.submitted) {
+      addSemester();
+      props.setSubmitted(false);
+    }
+  }, [props.submitted]);
 
   return (
     <div>

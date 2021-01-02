@@ -69,7 +69,7 @@ export default function Grades(props) {
     },
     'course': {
       content: 'Add a new course',
-      form: <AddCourseForm setCourses={ setCourses } />
+      form: <AddCourseForm setCourses={ setCourses } semesters={ semesters } />
     },
     'assignment type': {
       content: 'Add a new assignment type',
@@ -170,6 +170,7 @@ export default function Grades(props) {
           form={ addForm ? addForm.form : null }
           open={ addOpen }
           setOpen={ setAddOpen }
+          setAnchorEl={ setAnchorEl }
         />
         {/* Add button */}
         <Fab

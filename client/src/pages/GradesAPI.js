@@ -4,9 +4,7 @@ import API from '../API';
 const SEMESTER_URL = '/grades/semesters/';
 
 async function createSemester(semester) {
-  const { data: newSemester } = await API.post(SEMESTER_URL, {
-    semester,
-  });
+  const { data: newSemester } = await API.post(SEMESTER_URL, semester);
   return newSemester;
 }
 
@@ -29,9 +27,7 @@ async function deleteSemester(id) {
 const COURSE_URL = '/grades/courses/';
 
 async function createCourse(course) {
-  const { data: newCourse } = await API.post(COURSE_URL, {
-    course,
-  });
+  const { data: newCourse } = await API.post(COURSE_URL, course);
   return newCourse;
 }
 
@@ -54,9 +50,7 @@ async function deleteCourse(id) {
 const ASSIGNMENT_TYPES_URL = '/grades/assignment-types/';
 
 async function createAssignmentType(assignmentType) {
-  const { data: newAssignmentType } = await API.post(ASSIGNMENT_TYPES_URL, {
-    assignmentType,
-  });
+  const { data: newAssignmentType } = await API.post(ASSIGNMENT_TYPES_URL, assignmentType);
   return newAssignmentType;
 }
 
@@ -79,9 +73,7 @@ async function deleteAssignmentType(id) {
 const ASSIGNMENT_URL = '/grades/assignments/';
 
 async function createAssignment(assignment) {
-  const { data: newAssignment } = await API.post(ASSIGNMENT_URL, {
-    assignment,
-  });
+  const { data: newAssignment } = await API.post(ASSIGNMENT_URL, assignment);
   return newAssignment;
 }
 
