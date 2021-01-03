@@ -8,9 +8,10 @@ import AddIcon from '@material-ui/icons/Add';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 
-import AddSemesterForm from '../components/grades/AddSemesterForm';
 import DialogForm from '../components/DialogForm';
+import AddSemesterForm from '../components/grades/AddSemesterForm';
 import AddCourseForm from '../components/grades/AddCourseForm';
+import AddAssignmentTypeForm from '../components/grades/AddAssignmentTypeForm';
 
 const drawerWidth = 240;
 
@@ -51,10 +52,10 @@ export default function Grades(props) {
   const [semesters, setSemesters] = useState([]);
   const [semester, setSemester] = useState("");
   const [courses, setCourses] = useState({});
-  const [course, setCourse] = useState("");
-  const [assignmentTypes, setAssignmentTypes] = useState({});
+  const [course, setCourse] = useState(null);
+  const [assignmentTypes, setAssignmentTypes] = useState([]);
   const [assignmentType, setAssignmentType] = useState("");
-  const [assignments, setAssignments] = useState({});
+  const [assignments, setAssignments] = useState([]);
   const [assignment, setAssignment] = useState("");
 
   // UI States
@@ -73,6 +74,7 @@ export default function Grades(props) {
     },
     'assignment type': {
       content: 'Add a new assignment type',
+      form: <AddAssignmentTypeForm setAssignmentTypes={ setAssignmentTypes } course={ course } />
     },
     'assignment': {
       content: 'Add a new assignment',
@@ -109,6 +111,12 @@ export default function Grades(props) {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+  }
+
+  const handleCourseSelect = async (course) => {
+    setCourse(course);
+    const newAssignmentTypes = await GradesAPI.getAllAssignmentTypes(course);
+    setAssignmentTypes(newAssignmentTypes);
   }
 
   const classes = useStyles();
@@ -149,7 +157,7 @@ export default function Grades(props) {
                       key={index}
                       button
                       className={classes.drawerSubList}
-                      onClick={() => {setCourse(course.name)}}
+                      onClick={() => {handleCourseSelect(course)}}
                     >
                       <ListItemText primary={course.name} />
                     </ListItem>
@@ -186,8 +194,8 @@ export default function Grades(props) {
           open={Boolean(anchorEl)}
           onClose={handleMenuClose}
         >
-          {!!assignmentType ? <MenuItem onClick={() => {setAddOpen(true); setAddForm('assignment')}}>Assignment</MenuItem> : null}
-          {!!course ? <MenuItem onClick={() => {setAddOpen(true); setAddForm('assignment type')}}>Assignment Type</MenuItem> : null}
+          {!!assignmentType ? <MenuItem onClick={() => {setAddOpen(true); setAddForm(formTypes['assignment'])}}>Assignment</MenuItem> : null}
+          {!!course ? <MenuItem onClick={() => {setAddOpen(true); setAddForm(formTypes['assignment type'])}}>Assignment Type</MenuItem> : null}
           <MenuItem onClick={() => {setAddOpen(true); setAddForm(formTypes['course'])}}>Course</MenuItem>
           <MenuItem onClick={() => {setAddOpen(true); setAddForm(formTypes['semester'])}}>Semester</MenuItem>
         </Menu>

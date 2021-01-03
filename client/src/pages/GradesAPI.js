@@ -54,8 +54,8 @@ async function createAssignmentType(assignmentType) {
   return newAssignmentType;
 }
 
-async function getAllAssignmentTypes() {
-  const { data: assignmentTypes } = await API.get(ASSIGNMENT_TYPES_URL);
+async function getAllAssignmentTypes(course) {
+  const { data: assignmentTypes } = await API.get(`${ASSIGNMENT_TYPES_URL}${course._id}`);
   return assignmentTypes;
 }
 
