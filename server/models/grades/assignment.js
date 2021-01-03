@@ -6,9 +6,17 @@ const assignmentSchema = new Schema({
     type: String,
     required: true,
   },
+  due_date: {
+    type: Date,
+    required: true,
+  },
+  completed: {
+    type: Boolean,
+    default: false,
+  },
   grade: {
     type: Number,
-    required: true,
+    default: null,
   },
   type_id: {
     type: Schema.Types.ObjectId,
