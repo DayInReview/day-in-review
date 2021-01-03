@@ -3,7 +3,7 @@ import GradesAPI from './GradesAPI';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Menu, MenuItem, Fab, Drawer, List, ListSubheader, 
-          ListItem, ListItemText, Toolbar, Collapse } from '@material-ui/core';
+          ListItem, ListItemText, Toolbar, Collapse, Typography } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
@@ -12,6 +12,7 @@ import DialogForm from '../components/DialogForm';
 import AddSemesterForm from '../components/grades/AddSemesterForm';
 import AddCourseForm from '../components/grades/AddCourseForm';
 import AddAssignmentTypeForm from '../components/grades/AddAssignmentTypeForm';
+import GradesTable from '../components/grades/GradesTable';
 
 const drawerWidth = 240;
 
@@ -55,7 +56,7 @@ export default function Grades(props) {
   const [course, setCourse] = useState(null);
   const [assignmentTypes, setAssignmentTypes] = useState([]);
   const [assignmentType, setAssignmentType] = useState("");
-  const [assignments, setAssignments] = useState([]);
+  const [assignments, setAssignments] = useState({});
   const [assignment, setAssignment] = useState("");
 
   // UI States
@@ -100,6 +101,18 @@ export default function Grades(props) {
     }
     fetchAndSetCourses();
   }, [semesters]);
+
+  useEffect(() => {
+    const fetchAndSetAssignments = async () => {
+      let newAssignments = {};
+      for (const type of assignmentTypes) {
+        const allAssignments = await GradesAPI.getAllAssignments(type);
+        newAssignments[type.name] = allAssignments;
+      }
+      setAssignments(newAssignments);
+    }
+    fetchAndSetAssignments();
+  }, [assignmentTypes]);
 
   const handleSemesterClick = (name) => {
     if (name === semester) {
@@ -171,6 +184,14 @@ export default function Grades(props) {
       {/* Assignment Categories */}
       <main className={classes.content}>
         <Toolbar />
+        {/* Assignment Tables */}
+        {assignmentTypes.map((type, index) => (
+          <div key={index}>
+            <Typography variant="h4" align="left">{ type.name }</Typography>
+            <GradesTable assignments={ assignments[type.name] } />
+            <Toolbar />
+          </div>
+        ))}
         {/* Form Dialog */}
         <DialogForm
           title="Add New Item"

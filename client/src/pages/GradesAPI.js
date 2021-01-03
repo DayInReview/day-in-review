@@ -77,8 +77,8 @@ async function createAssignment(assignment) {
   return newAssignment;
 }
 
-async function getAllAssignments() {
-  const { data: assignments } = await API.get(ASSIGNMENT_URL);
+async function getAllAssignments(assignmentType) {
+  const { data: assignments } = await API.get(`${ASSIGNMENT_URL}${assignmentType._id}`);
   return assignments;
 }
 

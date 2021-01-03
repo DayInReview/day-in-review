@@ -21,9 +21,9 @@ router.post('/', async (req, res, next) => {
  * @description Gets all assignments of certain type
  * @access private
  */
-router.get('/', async (req, res, next) => {
+router.get('/:type', async (req, res, next) => {
   try {
-    const assignments = await Assignment.find({ type_id: req.body.type });
+    const assignments = await Assignment.find({ type_id: req.params.type });
     return res.status(200).json(assignments);
   } catch (err) {
     next({ status: 400, message: 'Failed to get assignments' });
