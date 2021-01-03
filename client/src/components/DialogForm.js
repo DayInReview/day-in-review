@@ -9,6 +9,7 @@ export default function DialogForm(props) {
   const handleClose = () => {
     props.setOpen(false);
     setSubmitted(false);
+    props.setAnchorEl(null);
   }
 
   const handleSubmit = () => {

@@ -38,11 +38,10 @@ const useStyles = makeStyles((theme) => ({
   toolbar: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.default,
     padding: theme.spacing(3),
   },
   fab: {
-    position: 'absolute',
+    position: 'fixed',
     bottom: theme.spacing(2),
     right: theme.spacing(2),
   },
@@ -55,9 +54,7 @@ export default function Grades(props) {
   const [courses, setCourses] = useState({});
   const [course, setCourse] = useState(null);
   const [assignmentTypes, setAssignmentTypes] = useState([]);
-  const [assignmentType, setAssignmentType] = useState("");
   const [assignments, setAssignments] = useState({});
-  const [assignment, setAssignment] = useState("");
 
   // UI States
   const [anchorEl, setAnchorEl] = useState(null);
@@ -70,16 +67,13 @@ export default function Grades(props) {
       form: <AddSemesterForm setSemesters={ setSemesters } />
     },
     'course': {
-      content: 'Add a new course',
+      content: 'Add a new course. Give a name, provide the grade cutoffs, and select the associated semester',
       form: <AddCourseForm setCourses={ setCourses } semesters={ semesters } />
     },
     'assignment type': {
-      content: 'Add a new assignment type',
+      content: 'Add a new assignment type. Give a name, the weight, and the number of allowed drops',
       form: <AddAssignmentTypeForm setAssignmentTypes={ setAssignmentTypes } course={ course } />
     },
-    'assignment': {
-      content: 'Add a new assignment',
-    }
   }
 
   useEffect(() => {
@@ -165,14 +159,15 @@ export default function Grades(props) {
               {/* List of courses for this semester */}
               <Collapse in={semester === name} timeout="auto" unmountOnExit>
                 <List disablePadding>
-                  {courses[name] && courses[name].map((course, index) => (
+                  {courses[name] && courses[name].map((c, index) => (
                     <ListItem
                       key={index}
                       button
+                      selected={ c === course }
                       className={classes.drawerSubList}
-                      onClick={() => {handleCourseSelect(course)}}
+                      onClick={() => {handleCourseSelect(c)}}
                     >
-                      <ListItemText primary={course.name} />
+                      <ListItemText primary={c.name} />
                     </ListItem>
                   ))}
                 </List>
@@ -183,12 +178,11 @@ export default function Grades(props) {
       </Drawer>
       {/* Assignment Categories */}
       <main className={classes.content}>
-        <Toolbar />
         {/* Assignment Tables */}
         {assignmentTypes.map((type, index) => (
           <div key={index}>
-            <Typography variant="h4" align="left">{ type.name }</Typography>
-            <GradesTable assignments={ assignments[type.name] } />
+            <Typography variant="h5" align="left">{ type.name }</Typography>
+            <GradesTable assignments={ assignments[type.name] } type={ type } setAssignments={ setAssignments } />
             <Toolbar />
           </div>
         ))}
@@ -215,7 +209,6 @@ export default function Grades(props) {
           open={Boolean(anchorEl)}
           onClose={handleMenuClose}
         >
-          {!!assignmentType ? <MenuItem onClick={() => {setAddOpen(true); setAddForm(formTypes['assignment'])}}>Assignment</MenuItem> : null}
           {!!course ? <MenuItem onClick={() => {setAddOpen(true); setAddForm(formTypes['assignment type'])}}>Assignment Type</MenuItem> : null}
           <MenuItem onClick={() => {setAddOpen(true); setAddForm(formTypes['course'])}}>Course</MenuItem>
           <MenuItem onClick={() => {setAddOpen(true); setAddForm(formTypes['semester'])}}>Semester</MenuItem>
