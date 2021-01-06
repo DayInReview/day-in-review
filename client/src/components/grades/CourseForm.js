@@ -39,32 +39,81 @@ const marks = [
 ];
 
 
-export default function AddCourseForm(props) {
+export default function CourseForm(props) {
   const classes = useStyles();
-  const [courseName, setCourseName] = useState("");
+  const [courseName, setCourseName] = useState(props.current ? props.current.name : "");
   const [courseSemester, setCourseSemester] = useState({});
-  const [cutoffs, setCutoffs] = useState(Object.values(defaultCutoffs));
+  const [cutoffs, setCutoffs] = useState(props.current ? Object.values(props.current.cutoffs) : Object.values(defaultCutoffs));
 
   const addCourse = async () => {
-      var newCutoffs = {};
-      Object.getOwnPropertyNames(defaultCutoffs).forEach((key, i) => newCutoffs[key] = cutoffs[i]);
-      const newCourse = await GradesAPI.createCourse({
-        name: courseName,
-        cutoffs: newCutoffs,
-        semester_id: courseSemester._id,
-      });
-      props.setCourses((state, props) => ({
+    var newCutoffs = {};
+    Object.getOwnPropertyNames(defaultCutoffs).forEach((key, i) => newCutoffs[key] = cutoffs[i]);
+    const newCourse = await GradesAPI.createCourse({
+      name: courseName,
+      cutoffs: newCutoffs,
+      semester_id: courseSemester._id,
+    });
+    props.setCourses((state, props) => ({
+      ...state,
+      [courseSemester.name]: [
+        ...state[courseSemester.name],
+        newCourse,
+      ],
+    }));
+  }
+  
+  const updateCourse = async () => {
+    var newCutoffs = {};
+    Object.getOwnPropertyNames(defaultCutoffs).forEach((key, i) => newCutoffs[key] = cutoffs[i]);
+    const updatedCourse = await GradesAPI.updateCourse(props.current._id, {
+      name: courseName,
+      cutoffs: newCutoffs,
+      semester_id: courseSemester._id,
+    });
+    if (props.current.semester_id === courseSemester._id) { // Semester didn't change
+      props.setCourses((state) => ({
+        ...state,
+        [courseSemester.name]: state[courseSemester.name].map(course => (
+          course._id === props.current._id ? updatedCourse : course
+        )),
+      }));
+    } else {  // Semester did change
+      var oldSemester;
+      for (const s of props.semesters) {
+        if (s._id === props.current.semester_id) {
+          oldSemester = s;
+        }
+      }
+      props.setCourses((state) => ({
         ...state,
         [courseSemester.name]: [
           ...state[courseSemester.name],
-          newCourse,
+          updatedCourse,
         ],
+        [oldSemester.name]: state[oldSemester.name].filter(course => (
+          course._id !== props.current._id
+        )),
       }));
     }
+  }
+
+  useEffect(() => {
+    if (props.current) {
+      for (const s of props.semesters) {
+        if (s._id === props.current.semester_id) {
+          setCourseSemester(s);
+        }
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (props.submitted) {
-      addCourse();
+      if (props.current) {
+        updateCourse();
+      } else {
+        addCourse();
+      }
       props.setSubmitted(false);
     }
   }, [props.submitted]);
@@ -84,6 +133,7 @@ export default function AddCourseForm(props) {
         margin="dense"
         label="Course Name"
         fullWidth
+        value={courseName}
         onChange={(e) => {setCourseName(e.target.value)}}
       />
       <Typography gutterBottom>
@@ -95,13 +145,14 @@ export default function AddCourseForm(props) {
         min={50}
         max={100}
         step={.5}
-        defaultValue={Object.values(defaultCutoffs)}
+        defaultValue={cutoffs}
         marks={marks}
         onChange={handleCutoffsChange}
       />
       <FormControl className={classes.formControl}>
         <InputLabel>Semester</InputLabel>
         <Select
+          value={courseSemester}
           defaultValue=''
           fullWidth
           onChange={handleSemesterChange}

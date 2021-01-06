@@ -10,9 +10,6 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
 import DialogForm from '../components/DialogForm';
-import AddSemesterForm from '../components/grades/AddSemesterForm';
-import AddCourseForm from '../components/grades/AddCourseForm';
-import AddAssignmentTypeForm from '../components/grades/AddAssignmentTypeForm';
 import GradesTable from '../components/grades/GradesTable';
 import MoreMenu from '../components/grades/MoreMenu';
 
@@ -63,22 +60,9 @@ export default function Grades(props) {
   // UI States
   const [anchorEl, setAnchorEl] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [menuType, setMenuType] = useState("");
+  const [menuTarget, setMenuTarget] = useState(null);
   const [dialogForm, setDialogForm] = useState(null);
-
-  const formTypes = {
-    'semester': {
-      content: 'Add a new semester. Give a name (e.g. Fall 2019) and denote if this is your current semester',
-      form: <AddSemesterForm setSemesters={ setSemesters } />
-    },
-    'course': {
-      content: 'Add a new course. Give a name, provide the grade cutoffs, and select the associated semester',
-      form: <AddCourseForm setCourses={ setCourses } semesters={ semesters } />
-    },
-    'assignment type': {
-      content: 'Add a new assignment type. Give a name, the weight, and the number of allowed drops',
-      form: <AddAssignmentTypeForm setAssignmentTypes={ setAssignmentTypes } course={ course } />
-    },
-  }
 
   useEffect(() => {
     const fetchAndSetSemesters = async () => {
@@ -147,25 +131,25 @@ export default function Grades(props) {
             </ListSubheader>
           }
         >
-          {semesters.map(({ name }, index) => (
+          {semesters.map((s, index) => (
             <div key={index}>
               <ListItem
                 button
               >
-                <ListItemText primary={name} />
+                <ListItemText primary={s.name} />
                 <ListItemSecondaryAction className={classes.listItemSecondary}>
-                  <IconButton onClick={(e) => {setAnchorEl(e.target)}}>
+                  <IconButton onClick={(e) => {setAnchorEl(e.target); setMenuType("semester"); setMenuTarget(s)}}>
                     <MoreHorizIcon />
                   </IconButton>
-                  <IconButton onClick={() => {handleSemesterClick(name)}}>
-                    { semester === name ? <ExpandLess /> : <ExpandMore /> }
+                  <IconButton onClick={() => {handleSemesterClick(s.name)}}>
+                    { semester === s.name ? <ExpandLess /> : <ExpandMore /> }
                   </IconButton>
                 </ListItemSecondaryAction>
               </ListItem>
               {/* List of courses for this semester */}
-              <Collapse in={semester === name} timeout="auto" unmountOnExit>
+              <Collapse in={semester === s.name} timeout="auto" unmountOnExit>
                 <List disablePadding>
-                  {courses[name] && courses[name].map((c, index) => (
+                  {courses[s.name] && courses[s.name].map((c, index) => (
                     <ListItem
                       key={index}
                       button
@@ -175,7 +159,7 @@ export default function Grades(props) {
                     >
                       <ListItemText primary={c.name} />
                       <ListItemSecondaryAction>
-                        <IconButton edge="end" onClick={(e) => {setAnchorEl(e.target)}}>
+                        <IconButton edge="end" onClick={(e) => {setAnchorEl(e.target); setMenuType("course"); setMenuTarget(c)}}>
                           <MoreHorizIcon />
                         </IconButton>
                       </ListItemSecondaryAction>
@@ -187,10 +171,19 @@ export default function Grades(props) {
           ))}
         </List>
         {/* Edit Menu */}
-        <MoreMenu 
+        <MoreMenu
+          type={menuType}
+          target={menuTarget}
+          setTarget={setMenuTarget}
           anchorEl={anchorEl}
           setAnchorEl={setAnchorEl}
           setMenuOpen={setMenuOpen}
+          setDialogForm={setDialogForm}
+          setSemesters={setSemesters}
+          setCourses={setCourses}
+          setAssignmentTypes={setAssignmentTypes}
+          semesters={semesters}
+          course={course}
         />
       </Drawer>
       {/* Assignment Categories */}
