@@ -35,7 +35,8 @@ export default function Widget(props) {
   const pageLinks = {
     "todo": "/todo",
     "email": "/email",
-    "summarizer": "/summarizer"
+    "summarizer": "/summarizer",
+    "grades": "/grades",
   };
   const cardSize = {
     "xs": 12,
