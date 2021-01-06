@@ -21,10 +21,14 @@ import Dashboard from './pages/Dashboard';
 import TodoList from './pages/TodoList';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Grades from './pages/Grades';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
   },
   menuButton: {
     marginRight: 2
@@ -36,7 +40,7 @@ const useStyles = makeStyles({
   body: {
     textAlign: 'center'
   },
-});
+}));
 
 export default function App(props) {
   const classes = useStyles(props);
@@ -65,8 +69,8 @@ export default function App(props) {
 
   return (
     <AuthContext.Provider value={{ authToken, setAuthToken: setToken, clearAuthToken: clearToken }}>
-      <Router>
-        <AppBar className={classes.root}>
+      <Router className={classes.root}>
+        <AppBar className={classes.appBar}>
           <Toolbar>
             <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
               <MenuIcon />
@@ -86,6 +90,7 @@ export default function App(props) {
             <Route exact path="/register" render={(props) => <Register {...props} />} />
             <PrivateRoute exact path={["/", "/dashboard"]} component={Dashboard} />
             <PrivateRoute exact path="/todo" component={TodoList} />
+            <PrivateRoute exact path="/grades" component={Grades} />
           </Switch>
         </div>
       </Router>
