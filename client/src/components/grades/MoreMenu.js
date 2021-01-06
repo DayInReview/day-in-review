@@ -17,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MoreMenu(props) {
-  console.log(props);
   const formTypes = {
     'add': {
       'semester': {
@@ -45,7 +44,7 @@ export default function MoreMenu(props) {
     },
     'delete': {
       content: '',
-      form: <DeleteForm type={ props.type } current={ props.target } />,
+      form: <DeleteForm type={ props.type } current={ props.target } semesters={ props.semesters } setCourses={ props.setCourses } />,
     },
   }
 

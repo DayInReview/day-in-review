@@ -43,7 +43,7 @@ export default function DialogForm(props) {
         <Button onClick={handleClose} color="primary">
           Cancel
         </Button>
-        <Button onClick={handleSubmit} color="primary">
+        <Button onClick={handleSubmit} color={props.actionType === 'delete' ? "secondary" : "primary"}>
           { submit[props.actionType] }
         </Button>
       </DialogActions>
