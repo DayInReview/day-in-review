@@ -62,6 +62,7 @@ export default function Grades(props) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuType, setMenuType] = useState("");
   const [menuTarget, setMenuTarget] = useState(null);
+  const [actionType, setActionType] = useState("");
   const [dialogForm, setDialogForm] = useState(null);
 
   useEffect(() => {
@@ -172,8 +173,8 @@ export default function Grades(props) {
         </List>
         {/* Edit Menu */}
         <MoreMenu
-          type={menuType}
           target={menuTarget}
+          type={menuType}
           setTarget={setMenuTarget}
           anchorEl={anchorEl}
           setAnchorEl={setAnchorEl}
@@ -182,6 +183,7 @@ export default function Grades(props) {
           setSemesters={setSemesters}
           setCourses={setCourses}
           setAssignmentTypes={setAssignmentTypes}
+          setActionType={setActionType}
           semesters={semesters}
           course={course}
         />
@@ -198,7 +200,8 @@ export default function Grades(props) {
         ))}
         {/* Form Dialog */}
         <DialogForm
-          title="Add New Item"
+          type={ menuType }
+          actionType={ actionType }
           content={ dialogForm ? dialogForm.content : '' }
           form={ dialogForm ? dialogForm.form : null }
           open={ menuOpen }

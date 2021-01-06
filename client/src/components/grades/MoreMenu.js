@@ -8,6 +8,7 @@ import AddIcon from '@material-ui/icons/Add';
 import AddSemesterForm from './AddSemesterForm';
 import CourseForm from './CourseForm';
 import AddAssignmentTypeForm from './AddAssignmentTypeForm';
+import DeleteForm from './DeleteForm';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -16,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MoreMenu(props) {
+  console.log(props);
   const formTypes = {
     'add': {
       'semester': {
@@ -43,7 +45,7 @@ export default function MoreMenu(props) {
     },
     'delete': {
       content: '',
-      form: null,
+      form: <DeleteForm type={ props.type } current={ props.target } />,
     },
   }
 
@@ -55,17 +57,21 @@ export default function MoreMenu(props) {
   }
 
   const handleAdd = () => {
+    props.setActionType('add');
     props.setDialogForm(formTypes['add'][props.type]);
     props.setMenuOpen(true);
   }
 
   const handleEdit = () => {
+    props.setActionType('edit');
     props.setDialogForm(formTypes['edit'][props.type]);
     props.setMenuOpen(true);
   }
 
   const handleDelete = () => {
-
+    props.setActionType('delete');
+    props.setDialogForm(formTypes['delete']);
+    props.setMenuOpen(true);
   }
 
   return (
