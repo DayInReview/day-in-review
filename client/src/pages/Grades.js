@@ -2,17 +2,19 @@ import React, { useState, useEffect } from 'react';
 import GradesAPI from './GradesAPI';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Menu, MenuItem, Fab, Drawer, List, ListSubheader, 
-          ListItem, ListItemText, Toolbar, Collapse, Typography } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
+import { Drawer, List, ListSubheader, 
+          ListItem, ListItemText, ListItemSecondaryAction, Toolbar, 
+          Collapse, Typography, IconButton } from '@material-ui/core';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
 import DialogForm from '../components/DialogForm';
 import AddSemesterForm from '../components/grades/AddSemesterForm';
 import AddCourseForm from '../components/grades/AddCourseForm';
 import AddAssignmentTypeForm from '../components/grades/AddAssignmentTypeForm';
 import GradesTable from '../components/grades/GradesTable';
+import MoreMenu from '../components/grades/MoreMenu';
 
 const drawerWidth = 240;
 
@@ -33,6 +35,8 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerSubList: {
     paddingLeft: theme.spacing(4),
+  },
+  listItemSecondary: {
   },
   // necessary for content to be below app bar
   toolbar: theme.mixins.toolbar,
@@ -58,8 +62,8 @@ export default function Grades(props) {
 
   // UI States
   const [anchorEl, setAnchorEl] = useState(null);
-  const [addOpen, setAddOpen] = useState(false);
-  const [addForm, setAddForm] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [dialogForm, setDialogForm] = useState(null);
 
   const formTypes = {
     'semester': {
@@ -116,10 +120,6 @@ export default function Grades(props) {
     }
   }
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  }
-
   const handleCourseSelect = async (course) => {
     setCourse(course);
     const newAssignmentTypes = await GradesAPI.getAllAssignmentTypes(course);
@@ -151,10 +151,16 @@ export default function Grades(props) {
             <div key={index}>
               <ListItem
                 button
-                onClick={() => {handleSemesterClick(name)}}
               >
                 <ListItemText primary={name} />
-                { semester === name ? <ExpandLess /> : <ExpandMore /> }
+                <ListItemSecondaryAction className={classes.listItemSecondary}>
+                  <IconButton onClick={(e) => {setAnchorEl(e.target)}}>
+                    <MoreHorizIcon />
+                  </IconButton>
+                  <IconButton onClick={() => {handleSemesterClick(name)}}>
+                    { semester === name ? <ExpandLess /> : <ExpandMore /> }
+                  </IconButton>
+                </ListItemSecondaryAction>
               </ListItem>
               {/* List of courses for this semester */}
               <Collapse in={semester === name} timeout="auto" unmountOnExit>
@@ -168,6 +174,11 @@ export default function Grades(props) {
                       onClick={() => {handleCourseSelect(c)}}
                     >
                       <ListItemText primary={c.name} />
+                      <ListItemSecondaryAction>
+                        <IconButton edge="end" onClick={(e) => {setAnchorEl(e.target)}}>
+                          <MoreHorizIcon />
+                        </IconButton>
+                      </ListItemSecondaryAction>
                     </ListItem>
                   ))}
                 </List>
@@ -175,6 +186,12 @@ export default function Grades(props) {
             </div>
           ))}
         </List>
+        {/* Edit Menu */}
+        <MoreMenu 
+          anchorEl={anchorEl}
+          setAnchorEl={setAnchorEl}
+          setMenuOpen={setMenuOpen}
+        />
       </Drawer>
       {/* Assignment Categories */}
       <main className={classes.content}>
@@ -189,30 +206,12 @@ export default function Grades(props) {
         {/* Form Dialog */}
         <DialogForm
           title="Add New Item"
-          content={ addForm ? addForm.content : '' }
-          form={ addForm ? addForm.form : null }
-          open={ addOpen }
-          setOpen={ setAddOpen }
+          content={ dialogForm ? dialogForm.content : '' }
+          form={ dialogForm ? dialogForm.form : null }
+          open={ menuOpen }
+          setOpen={ setMenuOpen }
           setAnchorEl={ setAnchorEl }
         />
-        {/* Add button */}
-        <Fab
-          className={classes.fab}
-          color="primary"
-          onClick={(e) => {setAnchorEl(e.currentTarget)}}
-        >
-          <AddIcon />
-        </Fab>
-        <Menu
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleMenuClose}
-        >
-          {!!course ? <MenuItem onClick={() => {setAddOpen(true); setAddForm(formTypes['assignment type'])}}>Assignment Type</MenuItem> : null}
-          <MenuItem onClick={() => {setAddOpen(true); setAddForm(formTypes['course'])}}>Course</MenuItem>
-          <MenuItem onClick={() => {setAddOpen(true); setAddForm(formTypes['semester'])}}>Semester</MenuItem>
-        </Menu>
       </main>
     </div>
   );
