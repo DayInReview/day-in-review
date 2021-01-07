@@ -72,6 +72,7 @@ export default function Grades(props) {
   const [menuTarget, setMenuTarget] = useState(null);
   const [actionType, setActionType] = useState("");
   const [dialogForm, setDialogForm] = useState(null);
+  const [assignmentEdit, setAssignmentEdit] = useState(false);
 
   const addSemesterForm = {
     content: 'Add a new semester. Give a name (e.g. Fall 2019) and denote if this is your current semester',
@@ -213,6 +214,7 @@ export default function Grades(props) {
           setAssignmentTypes={setAssignmentTypes}
           setAssignments={setAssignments}
           setActionType={setActionType}
+          setAssignmentEdit={setAssignmentEdit}
           course={course}
         />
       </Drawer>
@@ -235,6 +237,8 @@ export default function Grades(props) {
               setAnchorEl={ setAnchorEl }
               setMenuType={ setMenuType }
               setMenuTarget={ setMenuTarget }
+              assignmentEdit={ assignmentEdit }
+              setAssignmentEdit={ setAssignmentEdit }
             />
             <Toolbar />
           </div>

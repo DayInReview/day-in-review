@@ -87,9 +87,14 @@ export default function MoreMenu(props) {
   }
 
   const handleEdit = () => {
-    props.setActionType('edit');
-    props.setDialogForm(formTypes['edit'][props.type]);
-    props.setMenuOpen(true);
+    if (props.type === 'assignment') {
+      props.setAssignmentEdit(true);
+      handleMenuClose();
+    } else {
+      props.setActionType('edit');
+      props.setDialogForm(formTypes['edit'][props.type]);
+      props.setMenuOpen(true);
+    }
   }
 
   const handleDelete = () => {

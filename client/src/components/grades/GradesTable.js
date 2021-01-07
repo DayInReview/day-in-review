@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, Checkbox, Button, IconButton } from '@material-ui/core';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton } from '@material-ui/core';
 import DoneIcon from '@material-ui/icons/Done';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
 
-import GradesAPI from '../../pages/GradesAPI';
-
+import AssignmentForm from './AssignmentForm';
 
 const useStyles = makeStyles({
   table: {
@@ -18,32 +15,13 @@ const useStyles = makeStyles({
 
 export default function GradesTable(props) {
   const classes = useStyles;
-  const [assignment, setAssignment] = useState("");
-  const [dueDate, setDueDate] = useState(new Date());
-  const [completed, setCompleted] = useState(false);
-  const [grade, setGrade] = useState(null);
+  const [editRow, setEditRow] = useState(-1);
 
-  const handleAddAssignment = async () => {
-    const newAssignment = await GradesAPI.createAssignment({
-      name: assignment,
-      due_date: dueDate,
-      completed: completed,
-      grade: grade,
-      type_id: props.type._id,
-    });
-    props.setAssignments((state) => ({
-      ...state,
-      [props.type.name]: [
-        ...state[props.type.name],
-        newAssignment,
-      ],
-    }));
-
-    // Clear form
-    setAssignment("");
-    setDueDate(new Date());
-    setCompleted(false);
-    setGrade(null);
+  const handleMoreClick = (e, assignment, index) => {
+    props.setAnchorEl(e.target);
+    props.setMenuType("assignment");
+    props.setMenuTarget(assignment);
+    setEditRow(index);
   }
 
   return (
@@ -60,6 +38,15 @@ export default function GradesTable(props) {
         </TableHead>
         <TableBody>
           {props.assignments ? props.assignments.map((assignment, index) => (
+            props.assignmentEdit && editRow === index ?
+            <AssignmentForm
+              key={ index }
+              current={ assignment }
+              setAssignments={ props.setAssignments }
+              type={ props.type }
+              setAssignmentEdit={ props.setAssignmentEdit }
+            />
+            :
             <TableRow key={index}>
               <TableCell component="th" scope="row">
                 { assignment.name }
@@ -68,62 +55,17 @@ export default function GradesTable(props) {
               <TableCell align="right">{ assignment.completed ? <DoneIcon /> : null }</TableCell>
               <TableCell align="right">{ assignment.grade }</TableCell>
               <TableCell align="right">
-                <IconButton onClick={(e) => {props.setAnchorEl(e.target); props.setMenuType("assignment"); props.setMenuTarget(assignment)}}>
+                <IconButton onClick={(e) => {handleMoreClick(e, assignment, index)}}>
                   <MoreHorizIcon />
                 </IconButton>
               </TableCell>
             </TableRow>
           )) : null}
           {/* Add Assignment Row */}
-          <TableRow>
-            <TableCell component="th" scope="row">
-              <TextField
-                margin="dense"
-                label="Assignment Name"
-                fullWidth
-                size="small"
-                onChange={(e) => {setAssignment(e.target.value)}}
-              />
-            </TableCell>
-            <TableCell align="right">
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                  disableToolbar
-                  variant="inline"
-                  format="MM/dd/yyyy"
-                  margin="normal"
-                  label="Due Date"
-                  value={dueDate}
-                  onChange={(date) => {setDueDate(date)}}
-                />
-              </MuiPickersUtilsProvider>
-            </TableCell>
-            <TableCell align="right">
-              <Checkbox
-                color="primary"
-                checked={completed}
-                onChange={(e) => {setCompleted(!completed)}}
-              />
-            </TableCell>
-            <TableCell align="right">
-              <TextField
-                margin="dense"
-                label="Grade"
-                size="small"
-                disabled={!completed}
-                onChange={(e) => {setGrade(e.target.value)}}
-              />
-            </TableCell>
-            <TableCell align="right">
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleAddAssignment}
-              >
-                Add
-              </Button>
-            </TableCell>
-          </TableRow>
+          <AssignmentForm
+            setAssignments={ props.setAssignments }
+            type={ props.type }
+          />
         </TableBody>
       </Table>
     </TableContainer>
