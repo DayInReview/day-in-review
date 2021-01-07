@@ -1,5 +1,4 @@
 import React from 'react';
-import './Dashboard.scss';
 import {
   Grid
 } from '@material-ui/core'
@@ -21,12 +20,12 @@ export default function Dashboard() {
   // Create widgets
   const widgets = [];
 
-  widgets.push(<Widget name="To-do" description={descriptions.todo} widget="todo" icon={<ListAltOutlinedIcon style={{ fontSize: 180, color: 'green' }}/>} />);
-  widgets.push(<Widget name="Email" description={descriptions.email} widget="email" icon={<EmailOutlinedIcon style={{ fontSize: 180, color: 'blue' }}/>} />);
-  widgets.push(<Widget name="Summarizer" description={descriptions.summarizer} widget="summarizer" icon={<DescriptionOutlinedIcon style={{ fontSize: 180, color: 'red' }}/>} />);
-  widgets.push(<Widget name="Grades" description={descriptions.grades} widget="grades" icon={<SchoolOutlinedIcon style={{ fontSize: 180, color: 'orange' }}/>} />);
-  widgets.push(<Widget name="To-do" description={descriptions.todo} widget="todo" icon={<ListAltOutlinedIcon style={{ fontSize: 180, color: 'green' }}/>} />);
-  widgets.push(<Widget name="To-do" description={descriptions.todo} widget="todo" icon={<ListAltOutlinedIcon style={{ fontSize: 180, color: 'green' }}/>} />);
+  widgets.push(<Widget name="To-do" description={descriptions.todo} widget="todo" icon={<ListAltOutlinedIcon style={{ fontSize: '20vmin', color: '#009688' }}/>} />);
+  widgets.push(<Widget name="Email" description={descriptions.email} widget="email" icon={<EmailOutlinedIcon style={{ fontSize: '20vmin', color: '#01579b' }}/>} />);
+  widgets.push(<Widget name="Summarizer" description={descriptions.summarizer} widget="summarizer" icon={<DescriptionOutlinedIcon style={{ fontSize: '20vmin', color: '#8e24aa' }}/>} />);
+  widgets.push(<Widget name="Grades" description={descriptions.grades} widget="grades" icon={<SchoolOutlinedIcon style={{ fontSize: '20vmin', color: '#ef5350' }}/>} />);
+  widgets.push(<Widget name="To-do" description={descriptions.todo} widget="todo" icon={<ListAltOutlinedIcon style={{ fontSize: '20vmin', color: '#009688' }}/>} />);
+  widgets.push(<Widget name="To-do" description={descriptions.todo} widget="todo" icon={<ListAltOutlinedIcon style={{ fontSize: '20vmin', color: '#009688' }}/>} />);
 
   return (
     // Row of Widgets

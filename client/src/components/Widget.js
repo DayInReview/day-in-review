@@ -1,5 +1,4 @@
 import React from 'react';
-import './Widget.scss';
 import {
   Card,
   CardActionArea,
