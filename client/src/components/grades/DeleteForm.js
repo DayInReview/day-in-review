@@ -7,7 +7,12 @@ import GradesAPI from '../../pages/GradesAPI';
 export default function DeleteForm(props) {
 
   const deleteSemester = async () => {
-
+    await GradesAPI.deleteSemester(props.current._id);
+    props.setSemesters((state) => (
+      state.filter(semester => (
+        semester._id !== props.current._id
+      )
+    )));
   }
 
   const deleteCourse = async () => {
@@ -28,12 +33,14 @@ export default function DeleteForm(props) {
   useEffect(() => {
     if (props.submitted) {
       switch (props.type) {
+        case 'semester':
+          deleteSemester();
+          break;
         case 'course':
           deleteCourse();
           break;
         case 'assignment type':
-          break;
-        case 'assignment':
+          deleteAssignmentType();
           break;
         default:
           break;

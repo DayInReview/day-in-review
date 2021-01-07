@@ -8,9 +8,11 @@ import { Drawer, List, ListSubheader,
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import AddIcon from '@material-ui/icons/Add';
 
 import DialogForm from '../components/DialogForm';
 import GradesTable from '../components/grades/GradesTable';
+import AddSemesterForm from '../components/grades/AddSemesterForm';
 import MoreMenu from '../components/grades/MoreMenu';
 
 const drawerWidth = 240;
@@ -34,6 +36,9 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(4),
   },
   listItemSecondary: {
+  },
+  addSemester: {
+    paddingRight: theme.spacing(2),
   },
   // necessary for content to be below app bar
   toolbar: theme.mixins.toolbar,
@@ -64,6 +69,11 @@ export default function Grades(props) {
   const [menuTarget, setMenuTarget] = useState(null);
   const [actionType, setActionType] = useState("");
   const [dialogForm, setDialogForm] = useState(null);
+
+  const addSemesterForm = {
+    content: 'Add a new semester. Give a name (e.g. Fall 2019) and denote if this is your current semester',
+    form: <AddSemesterForm setSemesters={ setSemesters } />
+  }
 
   useEffect(() => {
     const fetchAndSetSemesters = async () => {
@@ -103,6 +113,12 @@ export default function Grades(props) {
     } else {
       setSemester(name);
     }
+  }
+
+  const handleAddSemester = () => {
+    setActionType('add');
+    setDialogForm(addSemesterForm);
+    setMenuOpen(true);
   }
 
   const handleCourseSelect = async (course) => {
@@ -170,6 +186,13 @@ export default function Grades(props) {
               </Collapse>
             </div>
           ))}
+          <ListItem
+            button
+            onClick={handleAddSemester}
+          >
+            <AddIcon className={classes.addSemester} />
+            <ListItemText primary="Add New Semester" />
+          </ListItem>
         </List>
         {/* Edit Menu */}
         <MoreMenu
