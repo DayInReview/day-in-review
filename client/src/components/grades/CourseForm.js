@@ -53,7 +53,7 @@ export default function CourseForm(props) {
       cutoffs: newCutoffs,
       semester_id: courseSemester._id,
     });
-    props.setCourses((state, props) => ({
+    props.setCourses((state) => ({
       ...state,
       [courseSemester.name]: [
         ...state[courseSemester.name],

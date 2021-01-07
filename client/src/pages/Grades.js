@@ -12,7 +12,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 import DialogForm from '../components/DialogForm';
 import GradesTable from '../components/grades/GradesTable';
-import AddSemesterForm from '../components/grades/AddSemesterForm';
+import AddSemesterForm from '../components/grades/SemesterForm';
 import MoreMenu from '../components/grades/MoreMenu';
 
 const drawerWidth = 240;

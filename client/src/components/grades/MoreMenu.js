@@ -6,6 +6,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 
 import CourseForm from './CourseForm';
+import SemesterForm from './SemesterForm';
 import AddAssignmentTypeForm from './AddAssignmentTypeForm';
 import DeleteForm from './DeleteForm';
 
@@ -34,7 +35,7 @@ export default function MoreMenu(props) {
     'edit': {
       'semester': {
         content: 'Edit this semester',
-        form: null,
+        form: <SemesterForm setSemesters={ props.setSemesters } current={ props.target } />
       },
       'course': {
         content: 'Edit this course',
