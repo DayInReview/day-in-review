@@ -40,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
   addSemester: {
     paddingRight: theme.spacing(2),
   },
+  grow: {
+    flexGrow: 1,
+  },
   // necessary for content to be below app bar
   toolbar: theme.mixins.toolbar,
   content: {
@@ -216,7 +219,13 @@ export default function Grades(props) {
         {/* Assignment Tables */}
         {assignmentTypes.map((type, index) => (
           <div key={index}>
-            <Typography variant="h5" align="left">{ type.name }</Typography>
+            <Toolbar>
+              <Typography variant="h5" edge="start">{ type.name }</Typography>
+              <div className={classes.grow} />
+              <IconButton edge="end">
+                <MoreHorizIcon onClick={(e) => {setAnchorEl(e.target); setMenuType("assignment type"); setMenuTarget(type)}}/>
+              </IconButton>
+            </Toolbar>
             <GradesTable assignments={ assignments[type.name] } type={ type } setAssignments={ setAssignments } />
             <Toolbar />
           </div>

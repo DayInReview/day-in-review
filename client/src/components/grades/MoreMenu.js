@@ -7,7 +7,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 import CourseForm from './CourseForm';
 import SemesterForm from './SemesterForm';
-import AddAssignmentTypeForm from './AddAssignmentTypeForm';
+import AssignmentTypeForm from './AssignmentTypeForm';
 import DeleteForm from './DeleteForm';
 
 const useStyles = makeStyles((theme) => ({
@@ -25,11 +25,7 @@ export default function MoreMenu(props) {
       },
       'course': {
         content: 'Add a new assignment type. Give a name, the weight, and the number of allowed drops',
-        form: <AddAssignmentTypeForm setAssignmentTypes={ props.setAssignmentTypes } course={ props.target } />
-      },
-      'assignment type': {
-        content: 'Add a new assignment type. Give a name, the weight, and the number of allowed drops',
-        form: <AddAssignmentTypeForm setAssignmentTypes={ props.setAssignmentTypes } course={ props.course } />
+        form: <AssignmentTypeForm setAssignmentTypes={ props.setAssignmentTypes } course={ props.target } />
       },
     },
     'edit': {
@@ -40,6 +36,10 @@ export default function MoreMenu(props) {
       'course': {
         content: 'Edit this course',
         form: <CourseForm setCourses={ props.setCourses } semesters={ props.semesters } current={ props.target } />
+      },
+      'assignment type': {
+        content: 'Edit this assignment type',
+        form: <AssignmentTypeForm setAssignmentTypes={ props.setAssignmentTypes } current={ props.target } />
       }
     },
     'delete': {
@@ -80,10 +80,10 @@ export default function MoreMenu(props) {
       open={Boolean(props.anchorEl)}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleAdd}>
+      {(props.type !== 'assignment type') && <MenuItem onClick={handleAdd}>
         <AddIcon className={classes.icon} />
         Add
-      </MenuItem>
+      </MenuItem>}
       <MenuItem onClick={handleEdit}>
         <EditIcon className={classes.icon} />
         Edit
