@@ -11,8 +11,8 @@ export default function DeleteForm(props) {
     props.setSemesters((state) => (
       state.filter(semester => (
         semester._id !== props.current._id
-      )
-    )));
+      ))
+    ));
   }
 
   const deleteCourse = async () => {
@@ -27,7 +27,12 @@ export default function DeleteForm(props) {
   }
 
   const deleteAssignmentType = async () => {
-
+    await GradesAPI.deleteAssignmentType(props.current._id);
+    props.setAssignmentTypes((state) => (
+      state.filter(type => (
+        type._id !== props.current._id
+      ))
+    ));
   }
 
   useEffect(() => {

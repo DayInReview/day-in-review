@@ -45,8 +45,6 @@ export default function GradesTable(props) {
     setGrade(null);
   }
 
-  console.log(props.assignments);
-
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table}>

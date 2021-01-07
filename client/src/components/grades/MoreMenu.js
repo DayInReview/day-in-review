@@ -21,30 +21,53 @@ export default function MoreMenu(props) {
     'add': {
       'semester': {
         content: 'Add a new course. Give a name, provide the grade cutoffs, and select the associated semester',
-        form: <CourseForm setCourses={ props.setCourses } semesters={ props.semesters } />
+        form: <CourseForm
+                setCourses={ props.setCourses }
+                semesters={ props.semesters } 
+              />
       },
       'course': {
         content: 'Add a new assignment type. Give a name, the weight, and the number of allowed drops',
-        form: <AssignmentTypeForm setAssignmentTypes={ props.setAssignmentTypes } course={ props.target } />
+        form: <AssignmentTypeForm
+                setAssignmentTypes={ props.setAssignmentTypes }
+                course={ props.target }
+              />
       },
     },
     'edit': {
       'semester': {
         content: 'Edit this semester',
-        form: <SemesterForm setSemesters={ props.setSemesters } current={ props.target } />
+        form: <SemesterForm
+                setSemesters={ props.setSemesters }
+                current={ props.target }
+              />
       },
       'course': {
         content: 'Edit this course',
-        form: <CourseForm setCourses={ props.setCourses } semesters={ props.semesters } current={ props.target } />
+        form: <CourseForm
+                setCourses={ props.setCourses }
+                semesters={ props.semesters }
+                current={ props.target }
+              />
       },
       'assignment type': {
         content: 'Edit this assignment type',
-        form: <AssignmentTypeForm setAssignmentTypes={ props.setAssignmentTypes } current={ props.target } />
+        form: <AssignmentTypeForm
+                setAssignmentTypes={ props.setAssignmentTypes }
+                current={ props.target }
+              />
       }
     },
     'delete': {
       content: '',
-      form: <DeleteForm type={ props.type } current={ props.target } semesters={ props.semesters } setSemesters={ props.setSemesters } setCourses={ props.setCourses } />,
+      form: <DeleteForm 
+              type={ props.type }
+              current={ props.target }
+              semesters={ props.semesters }
+              setSemesters={ props.setSemesters }
+              setCourses={ props.setCourses }
+              setAssignmentTypes={ props.setAssignmentTypes }
+            />,
     },
   }
 

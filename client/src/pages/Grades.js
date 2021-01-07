@@ -222,8 +222,8 @@ export default function Grades(props) {
             <Toolbar>
               <Typography variant="h5" edge="start">{ type.name }</Typography>
               <div className={classes.grow} />
-              <IconButton edge="end">
-                <MoreHorizIcon onClick={(e) => {setAnchorEl(e.target); setMenuType("assignment type"); setMenuTarget(type)}}/>
+              <IconButton edge="end" onClick={(e) => {setAnchorEl(e.target); setMenuType("assignment type"); setMenuTarget(type)}}>
+                <MoreHorizIcon />
               </IconButton>
             </Toolbar>
             <GradesTable assignments={ assignments[type.name] } type={ type } setAssignments={ setAssignments } />
