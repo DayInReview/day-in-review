@@ -11,11 +11,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AddAssignmentTypeForm(props) {
+export default function AssignmentTypeForm(props) {
   const classes = useStyles();
-  const [assignmentType, setAssignmentType] = useState("");
-  const [weight, setWeight] = useState(0.0);
-  const [drops, setDrops] = useState(0);
+  const [assignmentType, setAssignmentType] = useState(props.current ? props.current.name : "");
+  const [weight, setWeight] = useState(props.current ? props.current.weight*100 : 0.0);
+  const [drops, setDrops] = useState(props.current ? props.current.drops : 0);
 
   const addAssignmentType = async () => {
     const newAssignmentType = await GradesAPI.createAssignmentType({
@@ -24,15 +24,31 @@ export default function AddAssignmentTypeForm(props) {
       drops: drops,
       course_id: props.course._id,
     });
-    props.setAssignmentTypes((state, props) => ([
+    props.setAssignmentTypes((state) => ([
       ...state,
       newAssignmentType,
     ]));
   }
 
+  const updateAssignmentType = async () => {
+    const updatedAssignmentType = await GradesAPI.updateAssignmentType(props.current._id, {
+      name: assignmentType,
+      weight: weight/100,
+      drops: drops,
+      course_id: props.current.course_id,
+    });
+    props.setAssignmentTypes((state) => (state.map(type => (
+      type._id === props.current._id ? updatedAssignmentType : type
+    ))));
+  }
+
   useEffect(() => {
     if (props.submitted) {
-      addAssignmentType();
+      if (props.current) {
+        updateAssignmentType();
+      } else {
+        addAssignmentType();
+      }
       props.setSubmitted(false);
     }
   }, [props.submitted]);
@@ -41,6 +57,7 @@ export default function AddAssignmentTypeForm(props) {
     <div>
       <TextField
         autoFocus
+        value={assignmentType}
         margin="dense"
         label="Assignment Type"
         fullWidth
@@ -49,6 +66,7 @@ export default function AddAssignmentTypeForm(props) {
       <FormControl className={classes.formControl}>
         <Input
           label="Weight"
+          value={weight}
           onChange={(e) => {setWeight(e.target.value)}}
           endAdornment={<InputAdornment position="end">%</InputAdornment>}
         />
@@ -56,8 +74,8 @@ export default function AddAssignmentTypeForm(props) {
       </FormControl>
       <FormControl className={classes.formControl}>
         <Input
-          value={drops}
           label="Drops"
+          value={drops}
           onChange={(e) => {setDrops(e.target.value)}}
         />
         <FormHelperText>Drops</FormHelperText>

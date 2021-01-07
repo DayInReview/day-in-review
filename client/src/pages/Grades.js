@@ -2,17 +2,18 @@ import React, { useState, useEffect } from 'react';
 import GradesAPI from './GradesAPI';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Menu, MenuItem, Fab, Drawer, List, ListSubheader, 
-          ListItem, ListItemText, Toolbar, Collapse, Typography } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
+import { Drawer, List, ListSubheader, 
+          ListItem, ListItemText, ListItemSecondaryAction, Toolbar, 
+          Collapse, Typography, IconButton } from '@material-ui/core';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import AddIcon from '@material-ui/icons/Add';
 
 import DialogForm from '../components/DialogForm';
-import AddSemesterForm from '../components/grades/AddSemesterForm';
-import AddCourseForm from '../components/grades/AddCourseForm';
-import AddAssignmentTypeForm from '../components/grades/AddAssignmentTypeForm';
 import GradesTable from '../components/grades/GradesTable';
+import AddSemesterForm from '../components/grades/SemesterForm';
+import MoreMenu from '../components/grades/MoreMenu';
 
 const drawerWidth = 240;
 
@@ -33,6 +34,14 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerSubList: {
     paddingLeft: theme.spacing(4),
+  },
+  listItemSecondary: {
+  },
+  addSemester: {
+    paddingRight: theme.spacing(2),
+  },
+  grow: {
+    flexGrow: 1,
   },
   // necessary for content to be below app bar
   toolbar: theme.mixins.toolbar,
@@ -58,22 +67,16 @@ export default function Grades(props) {
 
   // UI States
   const [anchorEl, setAnchorEl] = useState(null);
-  const [addOpen, setAddOpen] = useState(false);
-  const [addForm, setAddForm] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuType, setMenuType] = useState("");
+  const [menuTarget, setMenuTarget] = useState(null);
+  const [actionType, setActionType] = useState("");
+  const [dialogForm, setDialogForm] = useState(null);
+  const [assignmentEdit, setAssignmentEdit] = useState(false);
 
-  const formTypes = {
-    'semester': {
-      content: 'Add a new semester. Give a name (e.g. Fall 2019) and denote if this is your current semester',
-      form: <AddSemesterForm setSemesters={ setSemesters } />
-    },
-    'course': {
-      content: 'Add a new course. Give a name, provide the grade cutoffs, and select the associated semester',
-      form: <AddCourseForm setCourses={ setCourses } semesters={ semesters } />
-    },
-    'assignment type': {
-      content: 'Add a new assignment type. Give a name, the weight, and the number of allowed drops',
-      form: <AddAssignmentTypeForm setAssignmentTypes={ setAssignmentTypes } course={ course } />
-    },
+  const addSemesterForm = {
+    content: 'Add a new semester. Give a name (e.g. Fall 2019) and denote if this is your current semester',
+    form: <AddSemesterForm setSemesters={ setSemesters } />
   }
 
   useEffect(() => {
@@ -116,8 +119,10 @@ export default function Grades(props) {
     }
   }
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
+  const handleAddSemester = () => {
+    setActionType('add');
+    setDialogForm(addSemesterForm);
+    setMenuOpen(true);
   }
 
   const handleCourseSelect = async (course) => {
@@ -147,19 +152,25 @@ export default function Grades(props) {
             </ListSubheader>
           }
         >
-          {semesters.map(({ name }, index) => (
+          {semesters.map((s, index) => (
             <div key={index}>
               <ListItem
                 button
-                onClick={() => {handleSemesterClick(name)}}
               >
-                <ListItemText primary={name} />
-                { semester === name ? <ExpandLess /> : <ExpandMore /> }
+                <ListItemText primary={s.name} />
+                <ListItemSecondaryAction className={classes.listItemSecondary}>
+                  <IconButton onClick={(e) => {setAnchorEl(e.target); setMenuType("semester"); setMenuTarget(s)}}>
+                    <MoreHorizIcon />
+                  </IconButton>
+                  <IconButton onClick={() => {handleSemesterClick(s.name)}}>
+                    { semester === s.name ? <ExpandLess /> : <ExpandMore /> }
+                  </IconButton>
+                </ListItemSecondaryAction>
               </ListItem>
               {/* List of courses for this semester */}
-              <Collapse in={semester === name} timeout="auto" unmountOnExit>
+              <Collapse in={semester === s.name} timeout="auto" unmountOnExit>
                 <List disablePadding>
-                  {courses[name] && courses[name].map((c, index) => (
+                  {courses[s.name] && courses[s.name].map((c, index) => (
                     <ListItem
                       key={index}
                       button
@@ -168,51 +179,80 @@ export default function Grades(props) {
                       onClick={() => {handleCourseSelect(c)}}
                     >
                       <ListItemText primary={c.name} />
+                      <ListItemSecondaryAction>
+                        <IconButton edge="end" onClick={(e) => {setAnchorEl(e.target); setMenuType("course"); setMenuTarget(c)}}>
+                          <MoreHorizIcon />
+                        </IconButton>
+                      </ListItemSecondaryAction>
                     </ListItem>
                   ))}
                 </List>
               </Collapse>
             </div>
           ))}
+          <ListItem
+            button
+            onClick={handleAddSemester}
+          >
+            <AddIcon className={classes.addSemester} />
+            <ListItemText primary="Add New Semester" />
+          </ListItem>
         </List>
+        {/* Edit Menu */}
+        <MoreMenu
+          target={menuTarget}
+          type={menuType}
+          setTarget={setMenuTarget}
+          anchorEl={anchorEl}
+          setAnchorEl={setAnchorEl}
+          setMenuOpen={setMenuOpen}
+          setDialogForm={setDialogForm}
+          semesters={semesters}
+          setSemesters={setSemesters}
+          setCourses={setCourses}
+          assignmentTypes={assignmentTypes}
+          setAssignmentTypes={setAssignmentTypes}
+          setAssignments={setAssignments}
+          setActionType={setActionType}
+          setAssignmentEdit={setAssignmentEdit}
+          course={course}
+        />
       </Drawer>
       {/* Assignment Categories */}
       <main className={classes.content}>
         {/* Assignment Tables */}
         {assignmentTypes.map((type, index) => (
           <div key={index}>
-            <Typography variant="h5" align="left">{ type.name }</Typography>
-            <GradesTable assignments={ assignments[type.name] } type={ type } setAssignments={ setAssignments } />
+            <Toolbar>
+              <Typography variant="h5" edge="start">{ type.name }</Typography>
+              <div className={classes.grow} />
+              <IconButton edge="end" onClick={(e) => {setAnchorEl(e.target); setMenuType("assignment type"); setMenuTarget(type)}}>
+                <MoreHorizIcon />
+              </IconButton>
+            </Toolbar>
+            <GradesTable
+              type={ type }
+              assignments={ assignments[type.name] }
+              setAssignments={ setAssignments }
+              setAnchorEl={ setAnchorEl }
+              setMenuType={ setMenuType }
+              setMenuTarget={ setMenuTarget }
+              assignmentEdit={ assignmentEdit }
+              setAssignmentEdit={ setAssignmentEdit }
+            />
             <Toolbar />
           </div>
         ))}
         {/* Form Dialog */}
         <DialogForm
-          title="Add New Item"
-          content={ addForm ? addForm.content : '' }
-          form={ addForm ? addForm.form : null }
-          open={ addOpen }
-          setOpen={ setAddOpen }
+          type={ menuType }
+          actionType={ actionType }
+          content={ dialogForm ? dialogForm.content : '' }
+          form={ dialogForm ? dialogForm.form : null }
+          open={ menuOpen }
+          setOpen={ setMenuOpen }
           setAnchorEl={ setAnchorEl }
         />
-        {/* Add button */}
-        <Fab
-          className={classes.fab}
-          color="primary"
-          onClick={(e) => {setAnchorEl(e.currentTarget)}}
-        >
-          <AddIcon />
-        </Fab>
-        <Menu
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleMenuClose}
-        >
-          {!!course ? <MenuItem onClick={() => {setAddOpen(true); setAddForm(formTypes['assignment type'])}}>Assignment Type</MenuItem> : null}
-          <MenuItem onClick={() => {setAddOpen(true); setAddForm(formTypes['course'])}}>Course</MenuItem>
-          <MenuItem onClick={() => {setAddOpen(true); setAddForm(formTypes['semester'])}}>Semester</MenuItem>
-        </Menu>
       </main>
     </div>
   );

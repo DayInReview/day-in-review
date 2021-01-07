@@ -54,7 +54,7 @@ router.put('/:id', async (req, res, next) => {
  */
 router.delete('/:id', async (req, res, next) => {
   try {
-    await Semester.findByIdAndDelete(req.params.id);
+    await Semester.deleteOne({ _id: req.params.id });
     return res.status(200).json('Deleted semester');
   } catch (err) {
     next({ status: 400, message: 'Failed to delete semester' });

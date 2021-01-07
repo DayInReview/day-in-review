@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const AssignmentType = require('./assignmentType');
 
 
 const defaultCutoffs = {
@@ -28,6 +29,22 @@ const courseSchema = new Schema({
   semester_id: {
     type: Schema.Types.ObjectId,
     required: true,
+  }
+});
+
+courseSchema.pre('deleteOne', async function() {
+  const id = this._conditions._id;
+  AssignmentType.deleteMany({course_id: id}, (err) => {
+    if (err)
+      console.log(err);
+  });
+})
+
+courseSchema.pre('deleteMany', async function() {
+  const semester = this._conditions.semester_id;
+  const courses = await this.model.find({ semester_id: semester });
+  for (const course of courses) {
+    await AssignmentType.deleteMany({ course_id: course._id });
   }
 });
 
