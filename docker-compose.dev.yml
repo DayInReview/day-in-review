@@ -21,7 +21,7 @@ services:
   client:
     build:
       context: ./client
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     image: day-in-review_client
     container_name: day-in-review_react-client
     command: npm start
