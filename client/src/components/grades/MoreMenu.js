@@ -66,7 +66,9 @@ export default function MoreMenu(props) {
               semesters={ props.semesters }
               setSemesters={ props.setSemesters }
               setCourses={ props.setCourses }
+              assignmentTypes={ props.assignmentTypes }
               setAssignmentTypes={ props.setAssignmentTypes }
+              setAssignments={ props.setAssignments }
             />,
     },
   }
@@ -103,7 +105,7 @@ export default function MoreMenu(props) {
       open={Boolean(props.anchorEl)}
       onClose={handleMenuClose}
     >
-      {(props.type !== 'assignment type') && <MenuItem onClick={handleAdd}>
+      {(props.type !== 'assignment type' && props.type !== 'assignment') && <MenuItem onClick={handleAdd}>
         <AddIcon className={classes.icon} />
         Add
       </MenuItem>}

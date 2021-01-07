@@ -35,6 +35,17 @@ export default function DeleteForm(props) {
     ));
   }
 
+  const deleteAssignment = async () => {
+    await GradesAPI.deleteAssignment(props.current._id);
+    const type = props.assignmentTypes.find(t => t._id === props.current.type_id);
+    props.setAssignments((state) => ({
+      ...state,
+      [type.name]: state[type.name].filter(assignment => (
+        assignment._id !== props.current._id
+      )),
+    }));
+  }
+
   useEffect(() => {
     if (props.submitted) {
       switch (props.type) {
@@ -46,6 +57,9 @@ export default function DeleteForm(props) {
           break;
         case 'assignment type':
           deleteAssignmentType();
+          break;
+        case 'assignment':
+          deleteAssignment();
           break;
         default:
           break;

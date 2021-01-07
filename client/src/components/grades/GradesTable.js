@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, Checkbox, Button } from '@material-ui/core';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, Checkbox, Button, IconButton } from '@material-ui/core';
 import DoneIcon from '@material-ui/icons/Done';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 
@@ -66,6 +67,11 @@ export default function GradesTable(props) {
               <TableCell align="right">{ new Date(assignment.due_date).toLocaleDateString() }</TableCell>
               <TableCell align="right">{ assignment.completed ? <DoneIcon /> : null }</TableCell>
               <TableCell align="right">{ assignment.grade }</TableCell>
+              <TableCell align="right">
+                <IconButton onClick={(e) => {props.setAnchorEl(e.target); props.setMenuType("assignment"); props.setMenuTarget(assignment)}}>
+                  <MoreHorizIcon />
+                </IconButton>
+              </TableCell>
             </TableRow>
           )) : null}
           {/* Add Assignment Row */}

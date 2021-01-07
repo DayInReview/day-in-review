@@ -206,11 +206,13 @@ export default function Grades(props) {
           setAnchorEl={setAnchorEl}
           setMenuOpen={setMenuOpen}
           setDialogForm={setDialogForm}
+          semesters={semesters}
           setSemesters={setSemesters}
           setCourses={setCourses}
+          assignmentTypes={assignmentTypes}
           setAssignmentTypes={setAssignmentTypes}
+          setAssignments={setAssignments}
           setActionType={setActionType}
-          semesters={semesters}
           course={course}
         />
       </Drawer>
@@ -226,7 +228,14 @@ export default function Grades(props) {
                 <MoreHorizIcon />
               </IconButton>
             </Toolbar>
-            <GradesTable assignments={ assignments[type.name] } type={ type } setAssignments={ setAssignments } />
+            <GradesTable
+              type={ type }
+              assignments={ assignments[type.name] }
+              setAssignments={ setAssignments }
+              setAnchorEl={ setAnchorEl }
+              setMenuType={ setMenuType }
+              setMenuTarget={ setMenuTarget }
+            />
             <Toolbar />
           </div>
         ))}
