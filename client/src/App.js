@@ -21,6 +21,7 @@ import TodoList from './pages/TodoList';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Grades from './pages/Grades';
+import Email from './pages/Email';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -90,6 +91,7 @@ export default function App(props) {
             <PrivateRoute exact path={["/", "/dashboard"]} component={Dashboard} />
             <PrivateRoute exact path="/todo" component={TodoList} />
             <PrivateRoute exact path="/grades" component={Grades} />
+            <PrivateRoute exact path="/email" component={Email} />
           </Switch>
         </div>
       </Router>
