@@ -1,7 +1,9 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: (process.env.NODE_ENV === 'development') ? 
+            'http://localhost:5000/api' : 
+            'http://ec2-3-129-210-148.us-east-2.compute.amazonaws.com/api',
 });
 
 API.interceptors.request.use(

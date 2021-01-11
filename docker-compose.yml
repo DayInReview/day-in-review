@@ -5,35 +5,26 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
-    image: day-in-review_server
+    image: 570833929593.dkr.ecr.us-east-2.amazonaws.com/day-in-review_server:latest
     container_name: day-in-review_node-server
-    command: npm run dev
-    volumes:
-      - ./server/:/usr/src/app
-      - /usr/src/app/node_modules
+    command: npm start
     ports:
       - "5000:5000"
-    env_file: ./server/dev.env
+    env_file: ./server/prod.env
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
     networks:
       - app-network
   client:
     build:
       context: ./client
-      dockerfile: Dockerfile
-    image: day-in-review_client
+      dockerfile: Dockerfile.prod
+    image: 570833929593.dkr.ecr.us-east-2.amazonaws.com/day-in-review_client:latest
     container_name: day-in-review_react-client
-    command: npm start
-    volumes:
-      - ./client/:/usr/src/app
-      - /usr/src/app/node_modules
     depends_on:
       - server
     ports:
-      - "3000:3000"
-    environment:
-      - CHOKIDAR_USEPOLLING=true
+      - "80:80"
     networks:
       - app-network
 

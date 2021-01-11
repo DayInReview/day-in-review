@@ -5,7 +5,7 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
-    image: day-in-review_server
+    image: 570833929593.dkr.ecr.us-east-2.amazonaws.com/day-in-review_server:latest
     container_name: day-in-review_node-server
     command: npm start
     ports:
@@ -19,12 +19,12 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile.prod
-    image: day-in-review_client
+    image: 570833929593.dkr.ecr.us-east-2.amazonaws.com/day-in-review_client:latest
     container_name: day-in-review_react-client
     depends_on:
       - server
     ports:
-      - "1337:80"
+      - "80:80"
     networks:
       - app-network
 
