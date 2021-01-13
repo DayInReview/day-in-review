@@ -46,6 +46,11 @@ async function deleteCourse(id) {
   return message;
 }
 
+async function calculateCourseGrade(id) {
+  const { data: course } = await API.post(`${COURSE_URL}grade/${id}`);
+  return course;
+}
+
 // Assignment Types
 const ASSIGNMENT_TYPES_URL = '/grades/assignment-types/';
 
@@ -99,7 +104,7 @@ async function deleteAssignment(id) {
 
 export default {
   createSemester, getAllSemesters, updateSemester, deleteSemester,
-  createCourse, getAllCourses, updateCourse, deleteCourse,
+  createCourse, getAllCourses, updateCourse, deleteCourse, calculateCourseGrade,
   createAssignmentType, getAllAssignmentTypes, updateAssignmentType, deleteAssignmentType, calculateAssignmentTypeGrade,
   createAssignment, getAllAssignments, updateAssignment, deleteAssignment,
 }

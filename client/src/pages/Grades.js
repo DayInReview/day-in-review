@@ -62,7 +62,7 @@ export default function Grades(props) {
   const [semester, setSemester] = useState("");
   const [courses, setCourses] = useState({});
   const [course, setCourse] = useState(null);
-  const [newCourse, setNewCourse] = useState(false);
+  const [gradeCalc, setGradeCalc] = useState(false);
   const [assignmentTypes, setAssignmentTypes] = useState([]);
   const [assignments, setAssignments] = useState({});
 
@@ -108,10 +108,10 @@ export default function Grades(props) {
         newAssignments[type.name] = allAssignments;
       }
       setAssignments(newAssignments);
-      setNewCourse(false);
     }
-    if (newCourse)
+    if (!gradeCalc)
       fetchAndSetAssignments();
+    setGradeCalc(false);
   }, [assignmentTypes]);
 
   // Update grade calculations
@@ -122,11 +122,20 @@ export default function Grades(props) {
         const updatedAssignmentType = await GradesAPI.calculateAssignmentTypeGrade(assignmentType._id);
         newAssignmentTypes.push(updatedAssignmentType);
       }
-      console.log(newAssignmentTypes);
+      setGradeCalc(true);
       setAssignmentTypes(newAssignmentTypes);
     }
     calculateAssignmentTypeGrades();
   }, [assignments]);
+
+  useEffect(() => {
+    const calculateCourseGrades = async () => {
+      const updatedCourse = await GradesAPI.calculateCourseGrade(course._id);
+      setCourse(updatedCourse);
+    }
+    if (course)
+      calculateCourseGrades();
+  }, [assignmentTypes]);
 
   const handleSemesterClick = (name) => {
     if (name === semester) {
@@ -145,7 +154,6 @@ export default function Grades(props) {
   const handleCourseSelect = async (course) => {
     setCourse(course);
     const newAssignmentTypes = await GradesAPI.getAllAssignmentTypes(course);
-    setNewCourse(true);
     setAssignmentTypes(newAssignmentTypes);
   }
 
