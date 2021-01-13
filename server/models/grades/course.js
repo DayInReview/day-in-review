@@ -22,6 +22,10 @@ const courseSchema = new Schema({
     type: String,
     required: true,
   },
+  hours: {
+    type: Number,
+    required: true,
+  },
   cutoffs: {
     type: Object,
     default: defaultCutoffs,
