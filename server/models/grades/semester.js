@@ -11,6 +11,10 @@ const semesterSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  gpa: {
+    type: Number,
+    default: null,
+  },
   user_id: {
     type: Schema.Types.ObjectId,
     required: true,

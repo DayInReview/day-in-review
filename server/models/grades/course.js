@@ -26,6 +26,10 @@ const courseSchema = new Schema({
     type: Object,
     default: defaultCutoffs,
   },
+  grade: {
+    type: Number,
+    default: null,
+  },
   semester_id: {
     type: Schema.Types.ObjectId,
     required: true,

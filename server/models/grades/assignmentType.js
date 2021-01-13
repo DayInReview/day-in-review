@@ -15,6 +15,10 @@ const assignmentTypeSchema = new Schema({
     type: Number,
     default: 0,
   },
+  grade: {
+    type: Number,
+    default: null,
+  },
   course_id: {
     type: Schema.Types.ObjectId,
     required: true,
