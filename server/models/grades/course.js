@@ -4,7 +4,7 @@ const AssignmentType = require('./assignmentType');
 
 
 const defaultCutoffs = {
-  'A+': 92.5,
+  'A': 92.5,
   'A-': 89.5,
   'B+': 86.5,
   'B': 82.5,
