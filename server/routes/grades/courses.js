@@ -12,6 +12,7 @@ router.post('/', async (req, res, next) => {
     const course = await Course.create(req.body);
     return res.status(200).json(course);
   } catch (err) {
+    console.log(err);
     next({ status: 400, message: 'Failed to create course' });
   }
 });
