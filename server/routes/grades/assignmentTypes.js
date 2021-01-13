@@ -70,7 +70,11 @@ router.post('/grade/:id', async (req, res, next) => {
     const assignmentType = await AssignmentType.findById(req.params.id);
     const assignments = await Assignment.find({ type_id: req.params.id, grade: { $ne: null } });
     assignments.sort((a, b) => (a.grade - b.grade));  // Sorts least to greatest
-    assignments.splice(0, assignmentType.drops);  // Removes lowest scores depending on drop number
+    if (assignmentType.drops < assignments.length) {
+      assignments.splice(0, assignmentType.drops);
+    } else {
+      assignments.splice(0, assignments.length-1);
+    }
     const grade = assignments.reduce((acc, val) => (acc + val.grade/assignments.length), 0);
     const newAssignmentType = await AssignmentType.findByIdAndUpdate(req.params.id, {
       ...assignmentType._doc,
