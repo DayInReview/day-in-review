@@ -1,5 +1,5 @@
 const express = require('express');
-const { Course } = require('../../models');
+const { Course, AssignmentType } = require('../../models');
 const router = express.Router();
 
 /**
@@ -58,6 +58,30 @@ router.delete('/:id', async (req, res, next) => {
     return res.status(200).json('Course deleted');
   } catch (err) {
     next({ status: 400, message: 'Failed to delete course' });
+  }
+});
+
+/**
+ * @route POST api/grades/courses/grade
+ * @description Calculates the grade of a course
+ * @access private
+ */
+router.post('/grade/:id', async (req, res, next) => {
+  try {
+    const course = await Course.findById(req.params.id);
+    const assignmentTypes = await AssignmentType.find({ course_id: req.params.id, grade: { $ne: null } });
+    const totalWeight = assignmentTypes.reduce((acc, val) => (acc + val.weight), 0);
+    const grade = assignmentTypes.reduce((acc, val) => (acc + val.grade*val.weight/totalWeight), 0);
+    const newCourse = await Course.findByIdAndUpdate(req.params.id, {
+      ...course._doc,
+      grade,
+    },
+    {
+      new: true,
+    });
+    return res.status(200).json(newCourse);
+  } catch (err) {
+    next({ status: 400, message: 'Failed to calculate grade for course' });
   }
 });
 
