@@ -1,5 +1,5 @@
 const express = require('express');
-const { AssignmentType } = require('../../models');
+const { AssignmentType, Assignment } = require('../../models');
 const router = express.Router();
 
 /**
@@ -57,6 +57,32 @@ router.delete('/:id', async (req, res, next) => {
     return res.status(200).json('Assignment Type deleted');
   } catch (err) {
     next({ status: 400, message: 'Failed to delete assignment type' });
+  }
+});
+
+/**
+ * @route POST api/grades/assignment-types/grade
+ * @description Calculates the grade of an assignment type
+ * @access private
+ */
+router.post('/grade/:id', async (req, res, next) => {
+  try {
+    const assignmentType = await AssignmentType.findById(req.params.id);
+    const assignments = await Assignment.find({ type_id: req.params.id, grade: { $ne: null } });
+    assignments.sort((a, b) => (a.grade - b.grade));  // Sorts least to greatest
+    assignments.splice(0, assignmentType.drops);  // Removes lowest scores depending on drop number
+    const grade = assignments.reduce((acc, val) => (acc + val.grade/assignments.length), 0);
+    const newAssignmentType = await AssignmentType.findByIdAndUpdate(req.params.id, {
+      ...assignmentType._doc,
+      grade,
+    },
+    {
+      new: true,
+    });
+    return res.status(200).json(newAssignmentType);
+  } catch (err) {
+    console.log(err);
+    next({ status: 400, message: 'Failed to calculate grade for assignment type' });
   }
 });
 
