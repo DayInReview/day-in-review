@@ -1,5 +1,13 @@
 import API from '../API';
 
+// GPA
+const GPA_URL = '/grades/gpa';
+
+async function calculateGPA() {
+  const { data: gpa } = await API.post(GPA_URL);
+  return gpa;
+}
+
 // Semesters
 const SEMESTER_URL = '/grades/semesters/';
 
@@ -108,6 +116,7 @@ async function deleteAssignment(id) {
 }
 
 export default {
+  calculateGPA,
   createSemester, getAllSemesters, updateSemester, deleteSemester, calculateSemesterGrade,
   createCourse, getAllCourses, updateCourse, deleteCourse, calculateCourseGrade,
   createAssignmentType, getAllAssignmentTypes, updateAssignmentType, deleteAssignmentType, calculateAssignmentTypeGrade,

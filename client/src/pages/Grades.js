@@ -58,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Grades(props) {
   // Data states
+  const [gpa, setGPA] = useState(null);
   const [semesters, setSemesters] = useState([]);
   const [semester, setSemester] = useState("");
   const [courses, setCourses] = useState({});
@@ -158,6 +159,14 @@ export default function Grades(props) {
     calculateSemesterGrades();
   }, [courses]);
 
+  useEffect(() => {
+    const calculateGPA = async () => {
+      const gpa = await GradesAPI.calculateGPA();
+      setGPA(gpa);
+    }
+    calculateGPA();
+  }, [semesters]);
+
   const handleSemesterClick = (name) => {
     if (name === semester) {
       setSemester("");
@@ -252,6 +261,9 @@ export default function Grades(props) {
           >
             <AddIcon className={classes.addSemester} />
             <ListItemText primary="Add New Semester" />
+          </ListItem>
+          <ListItem>
+            <ListItemText primary={gpa ? "GPA: " + gpa.toFixed(2) : ''} />
           </ListItem>
         </List>
         {/* Edit Menu */}
