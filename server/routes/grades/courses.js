@@ -83,7 +83,7 @@ router.post('/grade/:id', async (req, res, next) => {
     let grade_points = points['F'];
     for (const letter of Object.keys(course.cutoffs)) {
       if (grade >= course.cutoffs[letter]) {
-        grade_points = points[letter];
+        grade_points = points[letter] * course.hours;
         break;
       }
     }

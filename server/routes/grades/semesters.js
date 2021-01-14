@@ -70,7 +70,17 @@ router.post('/grade/:id', async (req, res, next) => {
   try {
     const semester = await Semester.findById(req.params.id);
     const courses = await Course.find({ semester_id: req.params.id, grade_points: { $ne: null } });
-
+    const hours = courses.reduce((acc, val) => (acc + val.hours), 0);
+    const gpa = courses.reduce((acc, val) => (acc + val.grade_points/hours), 0);
+    const newSemester = await Semester.findByIdAndUpdate(req.params.id, {
+      ...semester._doc,
+      gpa,
+      hours,
+    },
+    {
+      new: true,
+    });
+    return res.status(200).json(newSemester);
   } catch (err) {
     next({ status: 400, message: 'Failed to calculate GPA for semester' });
   }
