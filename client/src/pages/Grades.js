@@ -97,7 +97,9 @@ export default function Grades(props) {
       }
       setCourses(newCourses);
     }
-    fetchAndSetCourses();
+    if (!gradeCalc)
+      fetchAndSetCourses();
+    setGradeCalc(false);
   }, [semesters]);
 
   useEffect(() => {
@@ -132,10 +134,29 @@ export default function Grades(props) {
     const calculateCourseGrades = async () => {
       const updatedCourse = await GradesAPI.calculateCourseGrade(course._id);
       setCourse(updatedCourse);
+      setCourses((state) => ({
+        ...state,
+        semester: state[semester].map((c) => (
+          c._id === updatedCourse._id ? updatedCourse : c
+        ))
+      }));
     }
     if (course)
       calculateCourseGrades();
   }, [assignmentTypes]);
+
+  useEffect(() => {
+    const calculateSemesterGrades = async () => {
+      let newSemesters = [];
+      for (const semester of semesters) {
+        const updatedSemester = await GradesAPI.calculateSemesterGrade(semester._id);
+        newSemesters.push(updatedSemester);
+      }
+      setGradeCalc(true);
+      setSemesters(newSemesters);
+    }
+    calculateSemesterGrades();
+  }, [courses]);
 
   const handleSemesterClick = (name) => {
     if (name === semester) {
@@ -192,7 +213,7 @@ export default function Grades(props) {
               <ListItem
                 button
               >
-                <ListItemText primary={s.name} secondary={s.gpa} />
+                <ListItemText primary={s.name} secondary={s.gpa ? s.gpa.toFixed(2) : ''} />
                 <ListItemSecondaryAction className={classes.listItemSecondary}>
                   <IconButton onClick={(e) => {setAnchorEl(e.target); setMenuType("semester"); setMenuTarget(s)}}>
                     <MoreHorizIcon />

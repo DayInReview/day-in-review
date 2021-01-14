@@ -23,6 +23,11 @@ async function deleteSemester(id) {
   return message;
 }
 
+async function calculateSemesterGrade(id) {
+  const { data: newSemester } = await API.post(`${SEMESTER_URL}grade/${id}`);
+  return newSemester;
+}
+
 // Courses
 const COURSE_URL = '/grades/courses/';
 
@@ -103,7 +108,7 @@ async function deleteAssignment(id) {
 }
 
 export default {
-  createSemester, getAllSemesters, updateSemester, deleteSemester,
+  createSemester, getAllSemesters, updateSemester, deleteSemester, calculateSemesterGrade,
   createCourse, getAllCourses, updateCourse, deleteCourse, calculateCourseGrade,
   createAssignmentType, getAllAssignmentTypes, updateAssignmentType, deleteAssignmentType, calculateAssignmentTypeGrade,
   createAssignment, getAllAssignments, updateAssignment, deleteAssignment,
