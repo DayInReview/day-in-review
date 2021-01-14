@@ -15,6 +15,10 @@ const semesterSchema = new Schema({
     type: Number,
     default: null,
   },
+  hours: {
+    type: Number,
+    default: null,
+  },
   user_id: {
     type: Schema.Types.ObjectId,
     required: true,

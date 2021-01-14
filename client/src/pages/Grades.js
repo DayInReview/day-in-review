@@ -159,7 +159,7 @@ export default function Grades(props) {
 
   const getLetterGrade = (course) => {
     for (const letter of Object.keys(course.cutoffs)) {
-      if (course.grade > course.cutoffs[letter]) {
+      if (course.grade >= course.cutoffs[letter]) {
         return letter;
       }
     }
@@ -192,7 +192,7 @@ export default function Grades(props) {
               <ListItem
                 button
               >
-                <ListItemText primary={s.name} />
+                <ListItemText primary={s.name} secondary={s.gpa} />
                 <ListItemSecondaryAction className={classes.listItemSecondary}>
                   <IconButton onClick={(e) => {setAnchorEl(e.target); setMenuType("semester"); setMenuTarget(s)}}>
                     <MoreHorizIcon />
@@ -256,13 +256,13 @@ export default function Grades(props) {
       {/* Assignment Categories */}
       <main className={classes.content}>
         <Toolbar>
-          {course ? <Typography variant="h4">{ course.name } ({ course.grade ? course.grade.toFixed(2) + " - " + getLetterGrade(course) : 'N/A' }%)</Typography> : null }
+          {course ? <Typography variant="h4">{ course.name } ({ course.grade ? course.grade.toFixed(2) + " - " + getLetterGrade(course) : 'N/A' })</Typography> : null }
         </Toolbar>
         {/* Assignment Tables */}
         {assignmentTypes.map((type, index) => (
           <div key={index}>
             <Toolbar>
-              <Typography variant="h5" edge="start">{ type.name } ({ type.grade ? type.grade.toFixed(2) : 'N/A' }%)</Typography>
+              <Typography variant="h5" edge="start">{ type.name } ({ type.grade ? type.grade.toFixed(2) : 'N/A' })</Typography>
               <div className={classes.grow} />
               <IconButton edge="end" onClick={(e) => {setAnchorEl(e.target); setMenuType("assignment type"); setMenuTarget(type)}}>
                 <MoreHorizIcon />

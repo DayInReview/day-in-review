@@ -68,14 +68,29 @@ router.delete('/:id', async (req, res, next) => {
  * @access private
  */
 router.post('/grade/:id', async (req, res, next) => {
+  const points = {
+    'A': 4, 'A-': 3.67,
+    'B+': 3.33, 'B': 3, 'B-': 2.67,
+    'C+': 2.33, 'C': 2, 'C-': 1.67,
+    'D+': 1.33, 'D': 1, 'D-': .67,
+    'F': 0,
+  }
   try {
     const course = await Course.findById(req.params.id);
     const assignmentTypes = await AssignmentType.find({ course_id: req.params.id, grade: { $ne: null } });
     const totalWeight = assignmentTypes.reduce((acc, val) => (acc + val.weight), 0);
     const grade = assignmentTypes.reduce((acc, val) => (acc + val.grade*val.weight/totalWeight), 0);
+    let grade_points = points['F'];
+    for (const letter of Object.keys(course.cutoffs)) {
+      if (grade >= course.cutoffs[letter]) {
+        grade_points = points[letter];
+        break;
+      }
+    }
     const newCourse = await Course.findByIdAndUpdate(req.params.id, {
       ...course._doc,
       grade,
+      grade_points,
     },
     {
       new: true,
