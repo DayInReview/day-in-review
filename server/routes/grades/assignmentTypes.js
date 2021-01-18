@@ -75,7 +75,7 @@ router.post('/grade/:id', async (req, res, next) => {
     } else {
       assignments.splice(0, assignments.length-1);
     }
-    const grade = assignments.reduce((acc, val) => (acc + val.grade/assignments.length), 0);
+    const grade = assignments.length ? assignments.reduce((acc, val) => (acc + val.grade/assignments.length), 0) : null;
     const newAssignmentType = await AssignmentType.findByIdAndUpdate(req.params.id, {
       ...assignmentType._doc,
       grade,

@@ -79,8 +79,8 @@ router.post('/grade/:id', async (req, res, next) => {
     const course = await Course.findById(req.params.id);
     const assignmentTypes = await AssignmentType.find({ course_id: req.params.id, grade: { $ne: null } });
     const totalWeight = assignmentTypes.reduce((acc, val) => (acc + val.weight), 0);
-    const grade = assignmentTypes.reduce((acc, val) => (acc + val.grade*val.weight/totalWeight), 0);
-    let grade_points = points['F'];
+    const grade = assignmentTypes.length ? assignmentTypes.reduce((acc, val) => (acc + val.grade*val.weight/totalWeight), 0) : null;
+    let grade_points = assignmentTypes.length ? points['F'] : null;
     for (const letter of Object.keys(course.cutoffs)) {
       if (grade >= course.cutoffs[letter]) {
         grade_points = points[letter] * course.hours;

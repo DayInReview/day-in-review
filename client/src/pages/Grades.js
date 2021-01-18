@@ -315,13 +315,13 @@ export default function Grades(props) {
           </div>
         ))}
         <Toolbar>
-          {course ? <Typography variant="h4">{ course.name } ({ course.grade ? course.grade.toFixed(2) + " - " + getLetterGrade(course) : 'N/A' })</Typography> : null }
+          {course ? <Typography variant="h4">{ course.name } ({ course.grade !== null ? course.grade.toFixed(2) + " - " + getLetterGrade(course) : 'N/A' })</Typography> : null }
         </Toolbar>
         {/* Assignment Tables */}
         {course && assignmentTypes.map((type, index) => (
           <div key={index}>
             <Toolbar>
-              <Typography variant="h5" edge="start">{ type.name } ({ type.grade ? type.grade.toFixed(2) : 'N/A' })</Typography>
+              <Typography variant="h5" edge="start">{ type.name } ({ type.grade !== null ? type.grade.toFixed(2) : 'N/A' })</Typography>
               <div className={classes.grow} />
               <IconButton edge="end" onClick={(e) => {setAnchorEl(e.target); setMenuType("assignment type"); setMenuTarget(type)}}>
                 <MoreHorizIcon />
