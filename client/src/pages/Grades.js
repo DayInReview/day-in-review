@@ -59,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Grades(props) {
   // Data states
   const [semesters, setSemesters] = useState([]);
+  const [dropdownSemester, setDropdownSemester] = useState("");
   const [semester, setSemester] = useState("");
   const [courses, setCourses] = useState({});
   const [course, setCourse] = useState(null);
@@ -111,11 +112,16 @@ export default function Grades(props) {
     fetchAndSetAssignments();
   }, [assignmentTypes]);
 
-  const handleSemesterClick = (name) => {
-    if (name === semester) {
-      setSemester("");
+  const handleSemesterClick = async (s) => {
+    setSemester(s);
+    setCourse(null);
+  }
+
+  const handleSemesterDropdown = (name) => {
+    if (name === dropdownSemester) {
+      setDropdownSemester("");
     } else {
-      setSemester(name);
+      setDropdownSemester(name);
     }
   }
 
@@ -156,19 +162,21 @@ export default function Grades(props) {
             <div key={index}>
               <ListItem
                 button
+                selected={ s === semester }
+                onClick={() => {handleSemesterClick(s)}}
               >
                 <ListItemText primary={s.name} />
                 <ListItemSecondaryAction className={classes.listItemSecondary}>
                   <IconButton onClick={(e) => {setAnchorEl(e.target); setMenuType("semester"); setMenuTarget(s)}}>
                     <MoreHorizIcon />
                   </IconButton>
-                  <IconButton onClick={() => {handleSemesterClick(s.name)}}>
-                    { semester === s.name ? <ExpandLess /> : <ExpandMore /> }
+                  <IconButton onClick={() => {handleSemesterDropdown(s.name)}}>
+                    { dropdownSemester === s.name ? <ExpandLess /> : <ExpandMore /> }
                   </IconButton>
                 </ListItemSecondaryAction>
               </ListItem>
               {/* List of courses for this semester */}
-              <Collapse in={semester === s.name} timeout="auto" unmountOnExit>
+              <Collapse in={dropdownSemester === s.name} timeout="auto" unmountOnExit>
                 <List disablePadding>
                   {courses[s.name] && courses[s.name].map((c, index) => (
                     <ListItem
@@ -220,8 +228,10 @@ export default function Grades(props) {
       </Drawer>
       {/* Assignment Categories */}
       <main className={classes.content}>
+        {/* Upcoming Assignments */}
+        {semester && !course && "Upcoming Assignments"}
         {/* Assignment Tables */}
-        {assignmentTypes.map((type, index) => (
+        {course && assignmentTypes.map((type, index) => (
           <div key={index}>
             <Toolbar>
               <Typography variant="h5" edge="start">{ type.name }</Typography>
