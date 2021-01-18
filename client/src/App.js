@@ -12,10 +12,9 @@ import {
   Typography,
   Button
 } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
 import { makeStyles } from '@material-ui/core/styles';
-import './App.scss';
 import { AuthContext } from './context/auth';
+import MenuDrawer from './components/MenuDrawer'
 
 import Dashboard from './pages/Dashboard';
 import TodoList from './pages/TodoList';
@@ -72,9 +71,7 @@ export default function App(props) {
       <Router className={classes.root}>
         <AppBar className={classes.appBar}>
           <Toolbar>
-            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-              <MenuIcon />
-            </IconButton>
+            <MenuDrawer />
             <Typography variant="h6" className={classes.title} onClick={() => {window.location.assign('/')}}>
               Day in Review
             </Typography>
