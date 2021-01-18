@@ -30,10 +30,11 @@ export default function GradesTable(props) {
         <TableHead>
           <TableRow>
             <TableCell>Assignment</TableCell>
-            <TableCell align="right">Due Date</TableCell>
-            <TableCell align="right">Completed</TableCell>
-            <TableCell align="right">Grade</TableCell>
-            <TableCell align="right"></TableCell>
+            { props.upcoming && <TableCell align="right">Course</TableCell> }
+            { !props.upcoming && <TableCell align="right">Due Date</TableCell> }
+            { !props.upcoming && <TableCell align="right">Completed</TableCell> }
+            { !props.upcoming && <TableCell align="right">Grade</TableCell> }
+            { !props.upcoming && <TableCell align="right"></TableCell> }
           </TableRow>
         </TableHead>
         <TableBody>
@@ -43,6 +44,7 @@ export default function GradesTable(props) {
               key={ index }
               current={ assignment }
               setAssignments={ props.setAssignments }
+              course={ props.course }
               type={ props.type }
               setAssignmentEdit={ props.setAssignmentEdit }
             />
@@ -51,21 +53,23 @@ export default function GradesTable(props) {
               <TableCell component="th" scope="row">
                 { assignment.name }
               </TableCell>
-              <TableCell align="right">{ new Date(assignment.due_date).toLocaleDateString() }</TableCell>
-              <TableCell align="right">{ assignment.completed ? <DoneIcon /> : null }</TableCell>
-              <TableCell align="right">{ assignment.grade }</TableCell>
-              <TableCell align="right">
+              { props.upcoming && <TableCell align="right">{ props.courses.find(c => (c._id === assignment.course_id)) ? props.courses.find(c => (c._id === assignment.course_id)).name : null }</TableCell> }
+              { !props.upcoming && <TableCell align="right">{ new Date(assignment.due_date).toLocaleDateString() }</TableCell> }
+              { !props.upcoming && <TableCell align="right">{ assignment.completed ? <DoneIcon /> : null }</TableCell> }
+              { !props.upcoming && <TableCell align="right">{ assignment.grade }</TableCell> }
+              { !props.upcoming && <TableCell align="right">
                 <IconButton onClick={(e) => {handleMoreClick(e, assignment, index)}}>
                   <MoreHorizIcon />
                 </IconButton>
-              </TableCell>
+              </TableCell> }
             </TableRow>
           )) : null}
           {/* Add Assignment Row */}
-          <AssignmentForm
+          { !props.upcoming && <AssignmentForm
             setAssignments={ props.setAssignments }
             type={ props.type }
-          />
+            course={ props.course }
+          /> }
         </TableBody>
       </Table>
     </TableContainer>

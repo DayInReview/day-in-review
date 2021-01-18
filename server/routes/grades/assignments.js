@@ -1,5 +1,5 @@
 const express = require('express');
-const { Assignment } = require('../../models');
+const { Course, AssignmentType, Assignment } = require('../../models');
 const router = express.Router();
 
 /**
@@ -18,10 +18,29 @@ router.post('/', async (req, res, next) => {
 
 /**
  * @route GET api/grades/assignments
+ * @description Gets all assignments that are incomplete for this semester
+ * @access private
+ */
+router.get('/upcoming/:semester', async (req, res, next) => {
+  try {
+    const assignments = await Assignment.find({ semester_id: req.params.semester, completed: false }, null, { sort: 'due_date' });
+    const grouped = assignments.reduce((acc, val) => ({
+      ...acc,
+      [val.due_date.toDateString()]: [...acc[val.due_date.toDateString()] || [], val],
+    }), {});
+    return res.status(200).json(grouped);
+  } catch (err) {
+    console.log(err);
+    next({ status: 400, message: 'Failed to get assignments' });
+  }
+});
+
+/**
+ * @route GET api/grades/assignments
  * @description Gets all assignments of certain type
  * @access private
  */
-router.get('/:type', async (req, res, next) => {
+router.get('/type/:type', async (req, res, next) => {
   try {
     const assignments = await Assignment.find({ type_id: req.params.type });
     return res.status(200).json(assignments);

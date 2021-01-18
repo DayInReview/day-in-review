@@ -21,6 +21,14 @@ const assignmentSchema = new Schema({
   type_id: {
     type: Schema.Types.ObjectId,
     required: true,
+  },
+  course_id: {
+    type: Schema.Types.ObjectId,
+    required: true,
+  },
+  semester_id: {
+    type: Schema.Types.ObjectId,
+    required: true,
   }
 });
 

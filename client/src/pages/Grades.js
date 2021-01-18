@@ -65,6 +65,8 @@ export default function Grades(props) {
   const [course, setCourse] = useState(null);
   const [assignmentTypes, setAssignmentTypes] = useState([]);
   const [assignments, setAssignments] = useState({});
+  const [assignmentDates, setAssignmentDates] = useState([]);
+  const [upcomingAssignments, setUpcomingAssignments] = useState({});
 
   // UI States
   const [anchorEl, setAnchorEl] = useState(null);
@@ -115,6 +117,10 @@ export default function Grades(props) {
   const handleSemesterClick = async (s) => {
     setSemester(s);
     setCourse(null);
+    const upcoming = await GradesAPI.getAllUpcomingAssignments(s);
+    console.log(upcoming);
+    setUpcomingAssignments(upcoming);
+    setAssignmentDates(Object.keys(upcoming));
   }
 
   const handleSemesterDropdown = (name) => {
@@ -133,6 +139,7 @@ export default function Grades(props) {
 
   const handleCourseSelect = async (course) => {
     setCourse(course);
+    setSemester(null);
     const newAssignmentTypes = await GradesAPI.getAllAssignmentTypes(course);
     setAssignmentTypes(newAssignmentTypes);
   }
@@ -229,7 +236,18 @@ export default function Grades(props) {
       {/* Assignment Categories */}
       <main className={classes.content}>
         {/* Upcoming Assignments */}
-        {semester && !course && "Upcoming Assignments"}
+        {semester && !course && assignmentDates.map((date, index) => (
+          <div key={index}>
+            <Toolbar>
+              <Typography variant="h5" edge="start">{ new Date(date).toLocaleString('default', { month: 'long', day: 'numeric' }) }</Typography>
+            </Toolbar>
+            <GradesTable
+              upcoming={ true }
+              courses={ courses[semester.name] }
+              assignments={ upcomingAssignments[date] }
+            />
+          </div>
+        ))}
         {/* Assignment Tables */}
         {course && assignmentTypes.map((type, index) => (
           <div key={index}>
@@ -242,6 +260,7 @@ export default function Grades(props) {
             </Toolbar>
             <GradesTable
               type={ type }
+              course={ course }
               assignments={ assignments[type.name] }
               setAssignments={ setAssignments }
               setAnchorEl={ setAnchorEl }
