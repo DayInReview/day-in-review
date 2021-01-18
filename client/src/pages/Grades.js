@@ -243,7 +243,7 @@ export default function Grades(props) {
                       className={classes.drawerSubList}
                       onClick={() => {handleCourseSelect(c)}}
                     >
-                      <ListItemText primary={c.name} />
+                      <ListItemText primary={c.name} secondary={c.grade} />
                       <ListItemSecondaryAction>
                         <IconButton edge="end" onClick={(e) => {setAnchorEl(e.target); setMenuType("course"); setMenuTarget(c)}}>
                           <MoreHorizIcon />
