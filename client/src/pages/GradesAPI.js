@@ -1,5 +1,13 @@
 import API from '../API';
 
+// GPA
+const GPA_URL = '/grades/gpa';
+
+async function calculateGPA() {
+  const { data: gpa } = await API.post(GPA_URL);
+  return gpa;
+}
+
 // Semesters
 const SEMESTER_URL = '/grades/semesters/';
 
@@ -21,6 +29,11 @@ async function updateSemester(id, payload) {
 async function deleteSemester(id) {
   const message = await API.delete(`${SEMESTER_URL}${id}`);
   return message;
+}
+
+async function calculateSemesterGrade(id) {
+  const { data: newSemester } = await API.post(`${SEMESTER_URL}grade/${id}`);
+  return newSemester;
 }
 
 // Courses
@@ -46,6 +59,11 @@ async function deleteCourse(id) {
   return message;
 }
 
+async function calculateCourseGrade(id) {
+  const { data: course } = await API.post(`${COURSE_URL}grade/${id}`);
+  return course;
+}
+
 // Assignment Types
 const ASSIGNMENT_TYPES_URL = '/grades/assignment-types/';
 
@@ -67,6 +85,11 @@ async function updateAssignmentType(id, payload) {
 async function deleteAssignmentType(id) {
   const message = await API.delete(`${ASSIGNMENT_TYPES_URL}${id}`);
   return message;
+}
+
+async function calculateAssignmentTypeGrade(id) {
+  const { data: assignmentType } = await API.post(`${ASSIGNMENT_TYPES_URL}grade/${id}`);
+  return assignmentType;
 }
 
 // Assignments
@@ -98,8 +121,9 @@ async function deleteAssignment(id) {
 }
 
 export default {
-  createSemester, getAllSemesters, updateSemester, deleteSemester,
-  createCourse, getAllCourses, updateCourse, deleteCourse,
-  createAssignmentType, getAllAssignmentTypes, updateAssignmentType, deleteAssignmentType,
+  createSemester, getAllSemesters, updateSemester, deleteSemester, calculateSemesterGrade,
+  createCourse, getAllCourses, updateCourse, deleteCourse, calculateCourseGrade,
+  createAssignmentType, getAllAssignmentTypes, updateAssignmentType, deleteAssignmentType, calculateAssignmentTypeGrade,
   createAssignment, getAllAssignments, getAllUpcomingAssignments, updateAssignment, deleteAssignment,
+  calculateGPA,
 }

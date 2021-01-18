@@ -1,5 +1,5 @@
 const express = require('express');
-const { Semester } = require('../../models');
+const { Semester, Course } = require('../../models');
 const router = express.Router();
 
 /**
@@ -48,7 +48,7 @@ router.put('/:id', async (req, res, next) => {
 });
 
 /**
- * @route DELETE api/gardes/semesters
+ * @route DELETE api/grades/semesters
  * @description Deletes a semester
  * @access private
  */
@@ -58,6 +58,31 @@ router.delete('/:id', async (req, res, next) => {
     return res.status(200).json('Deleted semester');
   } catch (err) {
     next({ status: 400, message: 'Failed to delete semester' });
+  }
+});
+
+/**
+ * @route POST api/grades/semesters/grade
+ * @description Calculates gpa for a semester
+ * @access private
+ */
+router.post('/grade/:id', async (req, res, next) => {
+  try {
+    const semester = await Semester.findById(req.params.id);
+    const courses = await Course.find({ semester_id: req.params.id, grade_points: { $ne: null } });
+    const hours = courses.reduce((acc, val) => (acc + val.hours), 0);
+    const gpa = courses.reduce((acc, val) => (acc + val.grade_points/hours), 0);
+    const newSemester = await Semester.findByIdAndUpdate(req.params.id, {
+      ...semester._doc,
+      gpa,
+      hours,
+    },
+    {
+      new: true,
+    });
+    return res.status(200).json(newSemester);
+  } catch (err) {
+    next({ status: 400, message: 'Failed to calculate GPA for semester' });
   }
 });
 

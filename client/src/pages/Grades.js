@@ -58,11 +58,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Grades(props) {
   // Data states
+  const [gpa, setGPA] = useState(null);
   const [semesters, setSemesters] = useState([]);
   const [dropdownSemester, setDropdownSemester] = useState("");
   const [semester, setSemester] = useState("");
   const [courses, setCourses] = useState({});
   const [course, setCourse] = useState(null);
+  const [gradeCalc, setGradeCalc] = useState(false);
   const [assignmentTypes, setAssignmentTypes] = useState([]);
   const [assignments, setAssignments] = useState({});
   const [assignmentDates, setAssignmentDates] = useState([]);
@@ -99,7 +101,9 @@ export default function Grades(props) {
       }
       setCourses(newCourses);
     }
-    fetchAndSetCourses();
+    if (!gradeCalc)
+      fetchAndSetCourses();
+    setGradeCalc(false);
   }, [semesters]);
 
   useEffect(() => {
@@ -111,14 +115,15 @@ export default function Grades(props) {
       }
       setAssignments(newAssignments);
     }
-    fetchAndSetAssignments();
+    if (!gradeCalc)
+      fetchAndSetAssignments();
+    setGradeCalc(false);
   }, [assignmentTypes]);
 
   const handleSemesterClick = async (s) => {
     setSemester(s);
     setCourse(null);
     const upcoming = await GradesAPI.getAllUpcomingAssignments(s);
-    console.log(upcoming);
     setUpcomingAssignments(upcoming);
     setAssignmentDates(Object.keys(upcoming));
   }
@@ -130,6 +135,55 @@ export default function Grades(props) {
       setDropdownSemester(name);
     }
   }
+  // Update grade calculations
+  useEffect(() => {
+    const calculateAssignmentTypeGrades = async () => {
+      let newAssignmentTypes = [];
+      for (const assignmentType of assignmentTypes) {
+        const updatedAssignmentType = await GradesAPI.calculateAssignmentTypeGrade(assignmentType._id);
+        newAssignmentTypes.push(updatedAssignmentType);
+      }
+      setGradeCalc(true);
+      setAssignmentTypes(newAssignmentTypes);
+    }
+    calculateAssignmentTypeGrades();
+  }, [assignments]);
+
+  useEffect(() => {
+    const calculateCourseGrades = async () => {
+      const updatedCourse = await GradesAPI.calculateCourseGrade(course._id);
+      setCourse(updatedCourse);
+      setCourses((state) => ({
+        ...state,
+        [semester]: state[semester] ? state[semester].map((c) => (
+          c._id === updatedCourse._id ? updatedCourse : c
+        )) : null,
+      }));
+    }
+    if (course)
+      calculateCourseGrades();
+  }, [assignmentTypes]);
+
+  useEffect(() => {
+    const calculateSemesterGrades = async () => {
+      let newSemesters = [];
+      for (const semester of semesters) {
+        const updatedSemester = await GradesAPI.calculateSemesterGrade(semester._id);
+        newSemesters.push(updatedSemester);
+      }
+      setGradeCalc(true);
+      setSemesters(newSemesters);
+    }
+    calculateSemesterGrades();
+  }, [courses]);
+
+  useEffect(() => {
+    const calculateGPA = async () => {
+      const gpa = await GradesAPI.calculateGPA();
+      setGPA(gpa);
+    }
+    calculateGPA();
+  }, [semesters]);
 
   const handleAddSemester = () => {
     setActionType('add');
@@ -142,6 +196,15 @@ export default function Grades(props) {
     setSemester(null);
     const newAssignmentTypes = await GradesAPI.getAllAssignmentTypes(course);
     setAssignmentTypes(newAssignmentTypes);
+  }
+
+  const getLetterGrade = (course) => {
+    for (const letter of Object.keys(course.cutoffs)) {
+      if (course.grade >= course.cutoffs[letter]) {
+        return letter;
+      }
+    }
+    return 'F';
   }
 
   const classes = useStyles();
@@ -172,7 +235,7 @@ export default function Grades(props) {
                 selected={ s === semester }
                 onClick={() => {handleSemesterClick(s)}}
               >
-                <ListItemText primary={s.name} />
+                <ListItemText primary={s.name} secondary={s.gpa ? s.gpa.toFixed(2) : ''} />
                 <ListItemSecondaryAction className={classes.listItemSecondary}>
                   <IconButton onClick={(e) => {setAnchorEl(e.target); setMenuType("semester"); setMenuTarget(s)}}>
                     <MoreHorizIcon />
@@ -193,7 +256,7 @@ export default function Grades(props) {
                       className={classes.drawerSubList}
                       onClick={() => {handleCourseSelect(c)}}
                     >
-                      <ListItemText primary={c.name} />
+                      <ListItemText primary={c.name} secondary={c.grade} />
                       <ListItemSecondaryAction>
                         <IconButton edge="end" onClick={(e) => {setAnchorEl(e.target); setMenuType("course"); setMenuTarget(c)}}>
                           <MoreHorizIcon />
@@ -211,6 +274,9 @@ export default function Grades(props) {
           >
             <AddIcon className={classes.addSemester} />
             <ListItemText primary="Add New Semester" />
+          </ListItem>
+          <ListItem>
+            <ListItemText primary={gpa ? "GPA: " + gpa.toFixed(2) : ''} />
           </ListItem>
         </List>
         {/* Edit Menu */}
@@ -248,11 +314,14 @@ export default function Grades(props) {
             />
           </div>
         ))}
+        <Toolbar>
+          {course ? <Typography variant="h4">{ course.name } ({ course.grade ? course.grade.toFixed(2) + " - " + getLetterGrade(course) : 'N/A' })</Typography> : null }
+        </Toolbar>
         {/* Assignment Tables */}
         {course && assignmentTypes.map((type, index) => (
           <div key={index}>
             <Toolbar>
-              <Typography variant="h5" edge="start">{ type.name }</Typography>
+              <Typography variant="h5" edge="start">{ type.name } ({ type.grade ? type.grade.toFixed(2) : 'N/A' })</Typography>
               <div className={classes.grow} />
               <IconButton edge="end" onClick={(e) => {setAnchorEl(e.target); setMenuType("assignment type"); setMenuTarget(type)}}>
                 <MoreHorizIcon />
