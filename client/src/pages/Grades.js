@@ -137,7 +137,7 @@ export default function Grades(props) {
       setCourse(updatedCourse);
       setCourses((state) => ({
         ...state,
-        semester: state[semester].map((c) => (
+        [semester]: state[semester].map((c) => (
           c._id === updatedCourse._id ? updatedCourse : c
         ))
       }));
