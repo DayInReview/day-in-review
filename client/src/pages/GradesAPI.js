@@ -101,7 +101,12 @@ async function createAssignment(assignment) {
 }
 
 async function getAllAssignments(assignmentType) {
-  const { data: assignments } = await API.get(`${ASSIGNMENT_URL}${assignmentType._id}`);
+  const { data: assignments } = await API.get(`${ASSIGNMENT_URL}type/${assignmentType._id}`);
+  return assignments;
+}
+
+async function getAllUpcomingAssignments(semester) {
+  const { data: assignments } = await API.get(`${ASSIGNMENT_URL}upcoming/${semester._id}`);
   return assignments;
 }
 
@@ -116,9 +121,9 @@ async function deleteAssignment(id) {
 }
 
 export default {
-  calculateGPA,
   createSemester, getAllSemesters, updateSemester, deleteSemester, calculateSemesterGrade,
   createCourse, getAllCourses, updateCourse, deleteCourse, calculateCourseGrade,
   createAssignmentType, getAllAssignmentTypes, updateAssignmentType, deleteAssignmentType, calculateAssignmentTypeGrade,
-  createAssignment, getAllAssignments, updateAssignment, deleteAssignment,
+  createAssignment, getAllAssignments, getAllUpcomingAssignments, updateAssignment, deleteAssignment,
+  calculateGPA,
 }

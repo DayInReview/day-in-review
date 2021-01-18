@@ -19,6 +19,8 @@ export default function AssignmentForm(props) {
       completed: completed,
       grade: grade,
       type_id: props.type._id,
+      course_id: props.course._id,
+      semester_id: props.course.semester_id,
     });
     props.setAssignments((state) => ({
       ...state,
@@ -42,6 +44,8 @@ export default function AssignmentForm(props) {
       completed: completed,
       grade: grade,
       type_id: props.type._id,
+      course_id: props.course._id,
+      semester_id: props.course.semester_id,
     });
     props.setAssignments((state) => ({
       ...state,
