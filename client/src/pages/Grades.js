@@ -152,10 +152,11 @@ export default function Grades(props) {
   useEffect(() => {
     const calculateCourseGrades = async () => {
       const updatedCourse = await GradesAPI.calculateCourseGrade(course._id);
+      const courseSemester = semesters.find(s => (s._id === updatedCourse.semester_id)).name;
       setCourse(updatedCourse);
       setCourses((state) => ({
         ...state,
-        [semester]: state[semester] ? state[semester].map((c) => (
+        [courseSemester]: state[courseSemester] ? state[courseSemester].map((c) => (
           c._id === updatedCourse._id ? updatedCourse : c
         )) : null,
       }));
@@ -163,7 +164,7 @@ export default function Grades(props) {
     if (course)
       calculateCourseGrades();
   }, [assignmentTypes]);
-
+  
   useEffect(() => {
     const calculateSemesterGrades = async () => {
       let newSemesters = [];
