@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import GradesAPI from '../../pages/GradesAPI';
 
 const defaultCutoffs = {
-  'A+': 92.5,
+  'A': 92.5,
   'A-': 89.5,
   'B+': 86.5,
   'B': 82.5,
@@ -51,6 +51,7 @@ export default function CourseForm(props) {
     const newCourse = await GradesAPI.createCourse({
       name: courseName,
       cutoffs: newCutoffs,
+      hours: courseName.search(/\d/),
       semester_id: courseSemester._id,
     });
     props.setCourses((state) => ({
@@ -68,6 +69,7 @@ export default function CourseForm(props) {
     const updatedCourse = await GradesAPI.updateCourse(props.current._id, {
       name: courseName,
       cutoffs: newCutoffs,
+      hours: courseName.search(/\d/),
       semester_id: courseSemester._id,
     });
     if (props.current.semester_id === courseSemester._id) { // Semester didn't change

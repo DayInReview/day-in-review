@@ -4,7 +4,7 @@ const AssignmentType = require('./assignmentType');
 
 
 const defaultCutoffs = {
-  'A+': 92.5,
+  'A': 92.5,
   'A-': 89.5,
   'B+': 86.5,
   'B': 82.5,
@@ -22,9 +22,21 @@ const courseSchema = new Schema({
     type: String,
     required: true,
   },
+  hours: {
+    type: Number,
+    required: true,
+  },
   cutoffs: {
     type: Object,
     default: defaultCutoffs,
+  },
+  grade: {
+    type: Number,
+    default: null,
+  },
+  grade_points: {
+    type: Number,
+    default: null,
   },
   semester_id: {
     type: Schema.Types.ObjectId,
