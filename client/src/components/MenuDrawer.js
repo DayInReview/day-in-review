@@ -53,19 +53,19 @@ export default function MenuDrawer() {
     >
       <List>
         <ListItem button key={'todo'} onClick={() => { window.location.assign('/todo') }}>
-          <ListItemIcon>{<ListAltIcon style={{ fontSize: '30', color: 'black' }}/>}</ListItemIcon>
+          <ListItemIcon>{<ListAltIcon style={{ fontSize: '30', color: '#009688' }}/>}</ListItemIcon>
           <ListItemText primary={'To-do'} />
         </ListItem>
         <ListItem button key={'email'} onClick={() => { window.location.assign('/email') }}>
-          <ListItemIcon>{<EmailIcon style={{ fontSize: '30', color: 'black' }}/>}</ListItemIcon>
+          <ListItemIcon>{<EmailIcon style={{ fontSize: '30', color: '#01579b' }}/>}</ListItemIcon>
           <ListItemText primary={'Email'} />
         </ListItem>
         <ListItem button key={'grades'} onClick={() => { window.location.assign('/grades') }}>
-          <ListItemIcon>{<SchoolIcon style={{ fontSize: '30', color: 'black' }}/>}</ListItemIcon>
+          <ListItemIcon>{<SchoolIcon style={{ fontSize: '30', color: '#ef5350' }}/>}</ListItemIcon>
           <ListItemText primary={'Grades'} />
         </ListItem>
         <ListItem button key={'docs'} onClick={() => { window.location.assign('/summarizer') }}>
-          <ListItemIcon>{<DescriptionIcon style={{ fontSize: '30', color: 'black' }}/>}</ListItemIcon>
+          <ListItemIcon>{<DescriptionIcon style={{ fontSize: '30', color: '#8e24aa' }}/>}</ListItemIcon>
           <ListItemText primary={'Summarizer'} />
         </ListItem>
       </List>
