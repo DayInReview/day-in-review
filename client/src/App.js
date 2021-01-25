@@ -8,7 +8,6 @@ import PrivateRoute from './PrivateRoute';
 import {
   AppBar,
   Toolbar,
-  IconButton,
   Typography,
   Button
 } from '@material-ui/core';
