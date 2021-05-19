@@ -50,11 +50,10 @@ export default function CourseForm(props) {
     var newCutoffsVals = [...cutoffs];
     newCutoffsVals.sort((a, b) => (b - a));
     Object.getOwnPropertyNames(defaultCutoffs).forEach((key, i) => newCutoffs[key] = newCutoffsVals[i]);
-    console.log(newCutoffs);
     const newCourse = await GradesAPI.createCourse({
       name: courseName,
       cutoffs: newCutoffs,
-      hours: courseName.search(/\d/),
+      hours: courseName[courseName.search(/\d/)],
       semester_id: courseSemester._id,
     });
     props.setCourses((state) => ({
@@ -71,11 +70,10 @@ export default function CourseForm(props) {
     var newCutoffsVals = [...cutoffs];
     newCutoffsVals.sort((a, b) => (b - a));
     Object.getOwnPropertyNames(defaultCutoffs).forEach((key, i) => newCutoffs[key] = newCutoffsVals[i]);
-    console.log(newCutoffs);
     const updatedCourse = await GradesAPI.updateCourse(props.current._id, {
       name: courseName,
       cutoffs: newCutoffs,
-      hours: courseName.search(/\d/),
+      hours: courseName[courseName.search(/\d/)],
       semester_id: courseSemester._id,
     });
     if (props.current.semester_id === courseSemester._id) { // Semester didn't change
