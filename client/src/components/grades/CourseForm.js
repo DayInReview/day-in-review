@@ -47,7 +47,10 @@ export default function CourseForm(props) {
 
   const addCourse = async () => {
     var newCutoffs = {};
-    Object.getOwnPropertyNames(defaultCutoffs).forEach((key, i) => newCutoffs[key] = cutoffs[i]);
+    var newCutoffsVals = [...cutoffs];
+    newCutoffsVals.sort((a, b) => (b - a));
+    Object.getOwnPropertyNames(defaultCutoffs).forEach((key, i) => newCutoffs[key] = newCutoffsVals[i]);
+    console.log(newCutoffs);
     const newCourse = await GradesAPI.createCourse({
       name: courseName,
       cutoffs: newCutoffs,
@@ -65,7 +68,10 @@ export default function CourseForm(props) {
   
   const updateCourse = async () => {
     var newCutoffs = {};
-    Object.getOwnPropertyNames(defaultCutoffs).forEach((key, i) => newCutoffs[key] = cutoffs[i]);
+    var newCutoffsVals = [...cutoffs];
+    newCutoffsVals.sort((a, b) => (b - a));
+    Object.getOwnPropertyNames(defaultCutoffs).forEach((key, i) => newCutoffs[key] = newCutoffsVals[i]);
+    console.log(newCutoffs);
     const updatedCourse = await GradesAPI.updateCourse(props.current._id, {
       name: courseName,
       cutoffs: newCutoffs,
