@@ -26,7 +26,7 @@ router.get('/upcoming/:semester', async (req, res, next) => {
     const assignments = await Assignment.find({ semester_id: req.params.semester, completed: false }, null, { sort: 'due_date' });
     const grouped = assignments.reduce((acc, val) => ({
       ...acc,
-      [val.due_date.toString()]: [...acc[val.due_date.toString()] || [], val],
+      [val.due_date.toDateString()]: [...acc[val.due_date.toDateString()] || [], val],
     }), {});
     return res.status(200).json(grouped);
   } catch (err) {
